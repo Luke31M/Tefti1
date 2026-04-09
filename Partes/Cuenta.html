@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEFTI - Mi Cuenta</title>
+    <style>
+        /* Estilos globales (iguales que en index.html) */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Estilos de Tarjeta (iguales que en index.html) */
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eaeaea;
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            color: #444;
+            text-transform: uppercase;
+        }
+
+        /* Estilos de datos */
+        .data-field {
+            margin-bottom: 15px;
+        }
+
+        .data-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-value {
+            font-size: 16px;
+            color: #000;
+            font-weight: 500;
+        }
+
+        /* Estilo para el estado del TEFTI PASS */
+        .pass-status {
+            background-color: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .pass-valid {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        /* Estilos de botones de acción */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        .btn-blue {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-blue:hover {
+            background: #1e8449;
+        }
+
+        .btn-red {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-red:hover {
+            background: #a71d2a;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+
+        /* --- MODO OSCURO NEÓN (MI CUENTA) --- */
+        body.dark-mode {
+            background-color: #0a0a0a !important;
+            color: #e0e0e0 !important;
+        }
+
+        /* Estilo de Tarjetas en modo oscuro */
+        body.dark-mode .card {
+            background: #161616 !important;
+            border-color: #333 !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        body.dark-mode .card h2 {
+            color: #2ecc71 !important;
+            /* Títulos en verde neón */
+            border-bottom-color: #333 !important;
+        }
+
+        /* Etiquetas y Valores */
+        body.dark-mode .data-label {
+            color: #888 !important;
+        }
+
+        body.dark-mode .data-value {
+            color: #ffffff !important;
+        }
+
+        /* TEFTI PASS Status */
+        body.dark-mode .pass-status {
+            background-color: #1a1a1a !important;
+            border-color: #2ecc71 !important;
+        }
+
+        body.dark-mode .pass-valid {
+            color: #2ecc71 !important;
+            text-shadow: 0 0 5px rgba(12, 235, 161, 0.3);
+        }
+
+        /* Botón Azul cambiado a Neón */
+        body.dark-mode .btn-blue {
+            background: #2ecc71 !important;
+            color: #000 !important;
+        }
+
+        /* NAVBAR (Mismo estilo que el resto de la app) */
+        body.dark-mode .navbar {
+            background-color: #111 !important;
+            border-bottom: 1px solid #333 !important;
+        }
+
+        body.dark-mode .nav-title {
+            color: #fff !important;
+        }
+
+        body.dark-mode .nav-links a {
+            background-color: #222 !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .nav-links a.active,
+        body.dark-mode .nav-links a:hover {
+            background-color: #2ecc71 !important;
+            color: #000 !important;
+            border-color: #2ecc71 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="navbar-container"></div>
+    <script src="navbar.js"></script>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>TUS DATOS DE TU CUENTA</h2>
+
+            <div class="data-field">
+                <div class="data-label">NOMBRE:</div>
+                <div class="data-value" id="disp-nombre">Cargando...</div>
+            </div>
+
+            <div class="data-field" id="field-correo">
+                <div class="data-label">CORREO:</div>
+                <div class="data-value" id="disp-correo">Cargando...</div>
+            </div>
+
+            <div class="data-field" id="field-pass">
+                <div class="data-label">CONTRASEÑA:</div>
+                <div class="data-value">*******</div>
+            </div>
+        </div>
+
+        <div class="card" id="tarjeta-tefti-pass">
+            <h2>🎫 MI TEFTI PASS</h2>
+
+            <!-- Puntos y barra de progreso -->
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-weight: bold; color: #444;">Puntos acumulados</span>
+                    <span style="font-size: 1.4rem; font-weight: 800; color: #006847;" id="pass-puntos">0</span>
+                </div>
+                <div style="background: #e0e0e0; border-radius: 20px; height: 12px; overflow: hidden;">
+                    <div id="pass-barra" style="height: 100%; width: 0%; background: linear-gradient(90deg, #006847, #2ecc71); border-radius: 20px; transition: width 0.8s ease;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #888; margin-top: 4px;">
+                    <span>0</span><span>100 pts</span>
+                </div>
+            </div>
+
+            <!-- Sellos -->
+            <div style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #f0faf5; border-radius: 10px; margin-bottom: 20px;">
+                <span style="font-size: 1.8rem;">🏷️</span>
+                <div>
+                    <div style="font-weight: 700; font-size: 1.1rem; color: #27ae60;" id="pass-num-sellos">0 sellos</div>
+                    <div style="font-size: 0.82rem; color: #666;">Locales visitados con TEFTI PASS</div>
+                </div>
+            </div>
+
+            <!-- Insignia actual -->
+            <div id="pass-insignia" style="background: linear-gradient(135deg, #ffd700, #ffa500); color: #333; border-radius: 12px; padding: 12px 16px; font-weight: 700; font-size: 1rem; margin-bottom: 20px; text-align: center; display: none;"></div>
+
+            <!-- Próxima insignia -->
+            <div id="pass-proxima" style="font-size: 0.85rem; color: #666; margin-bottom: 20px; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; text-align: center;"></div>
+
+            <!-- Historial de sellos -->
+            <div>
+                <div style="font-weight: 700; color: #444; margin-bottom: 10px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">📋 Historial de visitas</div>
+                <div id="pass-historial" style="max-height: 220px; overflow-y: auto;">
+                    <p style="color: #888; font-size: 0.9rem; text-align: center;">Escanea tu primer QR para comenzar tu aventura.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>ACCIONES DE LA CUENTA</h2>
+            <div class="action-buttons">
+                <button class="btn btn-blue" style="background-color: #28a745; color: white;" onclick="cambiarNombre()">EDITAR NOMBRE</button>
+                <button class="btn btn-blue" onclick="cambiarContraseña()">CAMBIAR CONTRASEÑA</button>
+
+
+                <button class="btn btn-red" onclick="cerrarSesionTurista()">CERRAR SESION</button>
+
+
+
+
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+        // CARGAR CONFIGURACIÓN DE MODO OSCURO
+        const config = JSON.parse(localStorage.getItem('tefti_config'));
+        if (config && config.modoOscuro) {
+            document.body.classList.add('dark-mode');
+        }
+
+
+
+
+        const estadoSesion = localStorage.getItem('tefti_sesion');
+        const paginaActual = window.location.pathname.split("/").pop() || 'index.html';
+
+        if (!estadoSesion && paginaActual === 'index.html') {
+            window.location.href = 'app.html';
+        }
+
+        // --- Cargar datos dinámicos ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const dispNombre = document.getElementById('disp-nombre');
+            const dispCorreo = document.getElementById('disp-correo');
+            const fieldCorreo = document.getElementById('field-correo');
+            const fieldPass = document.getElementById('field-pass');
+
+            let correoGuardado = localStorage.getItem('tefti_correo_usuario');
+            let nombreGuardado = localStorage.getItem('tefti_nombre_usuario');
+            let sesion = localStorage.getItem('tefti_sesion');
+
+            if (sesion === 'invitado') {
+                // Modo invitado: esconder correo y contraseña, asigarnar "Invitado"
+                dispNombre.textContent = "Invitado";
+                if(fieldCorreo) fieldCorreo.style.display = 'none';
+                if(fieldPass) fieldPass.style.display = 'none';
+            } else {
+                // Usuario real
+                if(correoGuardado) { dispCorreo.textContent = correoGuardado; }
+                else { dispCorreo.textContent = "usuario@desconocido.com"; }
+
+                if(nombreGuardado) { dispNombre.textContent = nombreGuardado; }
+                else { dispNombre.textContent = "Usuario Anónimo"; }
+            }
+        });
+
+        // La navbar ahora se carga mediante navbar.js
+
+
+
+        function cambiarContraseña() {
+            if (confirm("¿Estás seguro que deseas cambiar la contraseña? \n\n(Funcionalidad en desarrollo, por ahora te regresará al inicio)")) {
+                window.location.href = 'app.html';
+            }
+        }
+
+        async function cambiarNombre() {
+            const nuevoNombre = prompt("Ingresa tu nuevo nombre:");
+            if (!nuevoNombre || nuevoNombre.trim() === "") return;
+
+            let correoGuardado = localStorage.getItem('tefti_correo_usuario');
+            if (!correoGuardado) { 
+                alert("Atención: Pareces estar en Modo Invitado o hubo un error al leer tu correo de sesión."); 
+                // Actualiza visualmente igual
+                document.getElementById('disp-nombre').textContent = nuevoNombre.trim();
+                localStorage.setItem('tefti_nombre_usuario', nuevoNombre.trim());
+                return; 
+            }
+
+            try {
+                const res = await fetch(`/api/users/${correoGuardado}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nombre: nuevoNombre.trim() })
+                });
+
+                if (res.ok) {
+                    localStorage.setItem('tefti_nombre_usuario', nuevoNombre.trim());
+                    document.getElementById('disp-nombre').textContent = nuevoNombre.trim();
+                    alert("¡Nombre actualizado exitosamente en la base de datos!");
+                } else {
+                    alert("Lo sentimos, no se pudo actualizar el nombre en el servidor.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Aviso: Error de conexión, verifica que el Backend esté online.");
+            }
+        }
+
+
+        // ===== TEFTI PASS =====
+        const INSIGNIAS = [
+            { sellos: 10, nombre: '💎 TEFTI Master' },
+            { sellos: 5,  nombre: '🏆 Conocedor Local' },
+            { sellos: 3,  nombre: '⭐ Visitante Frecuente' },
+            { sellos: 1,  nombre: '🌱 Explorador Novato' },
+        ];
+
+        async function cargarTeftiPass() {
+            const correo = localStorage.getItem('tefti_correo_usuario');
+            const sesion = localStorage.getItem('tefti_sesion');
+            if (!correo || sesion === 'invitado') return;
+
+            try {
+                const res = await fetch(`/api/users/${correo}`);
+                if (!res.ok) return;
+                const data = await res.json();
+
+                const puntos = data.puntos || 0;
+                const sellos = data.sellos || [];
+
+                // Barra de progreso (cicla cada 100 pts)
+                document.getElementById('pass-puntos').textContent = puntos;
+                const pct = Math.min((puntos % 100), 100);
+                setTimeout(() => {
+                    document.getElementById('pass-barra').style.width = pct + '%';
+                }, 100);
+
+                // Sellos
+                document.getElementById('pass-num-sellos').textContent = `${sellos.length} sello${sellos.length !== 1 ? 's' : ''}`;
+
+                // Insignia actual
+                const insigniaActual = INSIGNIAS.find(i => sellos.length >= i.sellos);
+                if (insigniaActual) {
+                    const el = document.getElementById('pass-insignia');
+                    el.textContent = insigniaActual.nombre;
+                    el.style.display = 'block';
+                }
+
+                // Próxima insignia
+                const siguientes = [...INSIGNIAS].reverse();
+                const proxima = siguientes.find(i => sellos.length < i.sellos);
+                const elProxima = document.getElementById('pass-proxima');
+                if (proxima) {
+                    const faltan = proxima.sellos - sellos.length;
+                    elProxima.textContent = `Próxima insignia: ${proxima.nombre} — faltan ${faltan} sello${faltan !== 1 ? 's' : ''}`;
+                } else {
+                    elProxima.textContent = '🏅 ¡Has desbloqueado todas las insignias! Eres un verdadero TEFTI Master.';
+                }
+
+                // Historial
+                const histContainer = document.getElementById('pass-historial');
+                if (sellos.length === 0) return;
+
+                const sellosOrdenados = [...sellos].reverse();
+                histContainer.innerHTML = sellosOrdenados.map(s => `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px solid #f0f0f0; font-size: 0.88rem;">
+                        <div>
+                            <div style="font-weight: 600; color: #222;">📍 ${s.negocioNombre || 'Local'}</div>
+                            <div style="color: #888; font-size: 0.78rem;">${new Date(s.fecha).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
+                        </div>
+                        <div style="font-weight: 700; color: #006847;">+${s.puntosGanados || 10} pts</div>
+                    </div>
+                `).join('');
+
+            } catch(e) {
+                console.error('Error cargando TEFTI PASS:', e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarTeftiPass();
+        });
+
+    </script>
+
+</body>
+
+</html>

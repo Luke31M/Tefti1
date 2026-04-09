@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tefti pass - TEFTI Locales</title>
+    <style>
+         .body {
+            background-color: #F8F9FA; /* Fondo característico TEFTI */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            box-sizing: border-box;
+         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+    
+
+    <script>
+function generarPass() {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let pass = '';
+    for (let i = 0; i < 8; i++) {
+        pass += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+    return pass;
+}
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

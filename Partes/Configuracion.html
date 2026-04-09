@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - TEFTI</title>
+    <style>
+        /* CSS: Variables de colores (Modo Claro por defecto) */
+        :root {
+            --primary-color:#2ecc71;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #777777;
+            --input-border: #ccc;
+            --input-bg: #ffffff;
+        }
+
+        /* CSS: Variables de colores (Modo Oscuro) 
+           Cuando el body tenga esta clase, los colores cambiarán */
+        body.dark-mode {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #aaaaaa;
+            --input-border: #444;
+            --input-bg: #2d2d2d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            transition: background-color 0.3s, color 0.3s; /* Animación suave al cambiar de modo */
+        }
+
+        .config-container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 30px;
+            transition: background-color 0.3s;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .config-section {
+            margin-bottom: 25px;
+        }
+
+        .config-section h2 {
+            font-size: 16px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--input-border);
+        }
+
+        .form-group:last-child {
+            border-bottom: none;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        select, input[type="text"], input[type="email"] {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid var(--input-border);
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            outline: none;
+            font-size: 14px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .btn-save {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-save:hover {
+            background-color:#2ecc71;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="config-container">
+        <h1>Configuración</h1>
+
+        <div class="config-section">
+            <h2>Apariencia</h2>
+            <div class="form-group">
+                <label>Modo Oscuro</label>
+                <label class="switch">
+                    <input type="checkbox" id="toggleModoOscuro">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+
+        <div class="config-section">
+            <h2>Preferencias de Viaje</h2>
+            <div class="form-group">
+                <label for="idioma">Idioma de la App</label>
+                <select id="idioma">
+                    <option value="es" selected>Español</option>
+                    <option value="en">English (US)</option>
+                    <option value="fr">Français</option>
+                    <option value="pt">Português (BR)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <h2>Notificaciones del Mapa</h2>
+            <div class="form-group">
+                <label>Avisarme de locales cercanos</label>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Modo Ahorro de Datos (Offline)</label>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <button class="btn-save">Guardar Cambios</button>
+    </div>
+
+    <script>
+        // ========================================
+        // CONFIGURACIÓN POR USUARIO (Clave única por correo)
+        // ========================================
+        function getConfigKey() {
+            const correo = localStorage.getItem('tefti_correo_usuario') 
+                        || localStorage.getItem('tefti_correo_local') 
+                        || 'invitado';
+            return `tefti_config_${correo}`;
+        }
+
+        function aplicarIdioma(idioma) {
+            // Guardar el idioma para que inyectarTraductor() lo use en otras páginas
+            localStorage.setItem('tefti_idioma', idioma);
+
+            if (idioma && idioma !== 'es') {
+                // Activar cookie de Google Translate
+                document.cookie = `googtrans=/es/${idioma}; path=/;`;
+                document.cookie = `googtrans=/es/${idioma}; domain=.${window.location.hostname}; path=/;`;
+
+                // Inyectar el traductor si no está ya cargado
+                if (!document.getElementById('google_translate_script')) {
+                    const div = document.createElement('div');
+                    div.id = 'google_translate_element';
+                    div.style.display = 'none';
+                    document.body.appendChild(div);
+
+                    window.googleTranslateElementInit = function() {
+                        new google.translate.TranslateElement({ pageLanguage: 'es' }, 'google_translate_element');
+                    };
+
+                    const script = document.createElement('script');
+                    script.id = 'google_translate_script';
+                    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                    document.body.appendChild(script);
+
+                    // Ocultar la barra de Google Translate
+                    const style = document.createElement('style');
+                    style.innerHTML = `
+                        .goog-te-banner-frame.skiptranslate { display: none !important; }
+                        .skiptranslate iframe { display: none !important; }
+                        body { top: 0px !important; position: static !important; }
+                        #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+                        .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+                        .VIpgJd-ZVi9od-aZ2wEe-wOHMyf { display: none !important; }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+                // Forzar cambio en el selector oculto de Google (si ya está cargado)
+                let intentos = 0;
+                const forzar = setInterval(() => {
+                    const combo = document.querySelector('.goog-te-combo');
+                    if (combo) {
+                        combo.value = idioma;
+                        combo.dispatchEvent(new Event('change'));
+                        clearInterval(forzar);
+                    }
+                    if (++intentos > 30) clearInterval(forzar);
+                }, 200);
+
+            } else {
+                // Español: limpiar cookies de traducción
+                document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.${window.location.hostname}; path=/;`;
+                localStorage.removeItem('tefti_idioma');
+
+                // Revertir si la página ya estaba traducida
+                const frame = document.querySelector('iframe.goog-te-banner-frame');
+                if (frame && frame.contentWindow) {
+                    const restore = frame.contentWindow.document.getElementById(':1.restore');
+                    if (restore) restore.click();
+                }
+            }
+        }
+
+        const interruptor = document.getElementById('toggleModoOscuro');
+        const btnGuardar  = document.querySelector('.btn-save');
+        const selectIdioma = document.getElementById('idioma');
+
+        // Modo oscuro visual instantáneo
+        interruptor.addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Preview en tiempo real del idioma al cambiar el selector
+        selectIdioma.addEventListener('change', function() {
+            aplicarIdioma(this.value);
+        });
+
+        // GUARDAR CONFIGURACIÓN
+        btnGuardar.addEventListener('click', function() {
+            const configuracion = {
+                modoOscuro: interruptor.checked,
+                idioma: selectIdioma.value
+            };
+
+            // Guardar config del usuario actual (clave específica)
+            localStorage.setItem(getConfigKey(), JSON.stringify(configuracion));
+            // También guardar en la clave genérica para que todas las páginas lean el dark mode
+            localStorage.setItem('tefti_config', JSON.stringify(configuracion));
+
+            // Aplicar el idioma seleccionado para persistirlo en toda la app
+            aplicarIdioma(configuracion.idioma);
+
+            btnGuardar.innerText = '✅ Configuración guardada';
+            btnGuardar.style.backgroundColor = '#28a745';
+
+            setTimeout(function() {
+                const esLocalActivo = localStorage.getItem('tefti_sesion_local') === 'activa';
+                window.location.href = esLocalActivo ? 'PanelLocal.html' : 'index.html';
+            }, 1200);
+        });
+
+        // CARGAR CONFIGURACIÓN del usuario al entrar
+        window.onload = function() {
+            // Prioridad: config del usuario → config genérica
+            const datos = JSON.parse(localStorage.getItem(getConfigKey()))
+                       || JSON.parse(localStorage.getItem('tefti_config'));
+            if (datos) {
+                interruptor.checked = datos.modoOscuro || false;
+                if (datos.modoOscuro) document.body.classList.add('dark-mode');
+                if (datos.idioma) selectIdioma.value = datos.idioma;
+            }
+        };
+    </script>
+
+</body>
+</html>

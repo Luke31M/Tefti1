@@ -1,0 +1,162 @@
+<style>
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        padding: 10px 30px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+
+    .nav-brand img {
+        height: 40px;
+    }
+
+    .nav-brand-text {
+        line-height: 1.2;
+    }
+
+    .nav-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 0;
+        color: #000;
+    }
+
+    .nav-subtitle {
+        font-size: 11px;
+        color: #666;
+    }
+
+    .nav-verified {
+        font-size: 11px;
+        color: #2ecc71;
+        font-weight: bold;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 10px;
+    }
+
+    .nav-links a {
+        padding: 8px 15px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        background: #fff;
+        border: 1px solid #ddd;
+        transition: 0.2s;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+        background: #27ae60;
+        color: white;
+        border-color: #27ae60;
+    }
+
+    .nav-options {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .nav-options span,
+    .nav-options a {
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    /* Nuevo estilo para el botón de login */
+    .btn-login-nav {
+        background: #27ae60;
+        color: white !important;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+
+    .btn-login-nav:hover {
+        background: #1e8449;
+    }
+
+    @media (max-width: 900px) {
+        .navbar {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+    }
+
+
+    /* --- FORZAR VERDE NEÓN EN NAVBAR (MODO OSCURO) --- */
+    body.dark-mode .navbar {
+        background-color: #111 !important;
+        border-bottom: 1px solid #333 !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    /* El título de TEFTI en blanco para que resalte */
+    body.dark-mode .nav-title {
+        color: #ffffff !important;
+    }
+
+    /* Los botones de navegación: Fondo oscuro, texto blanco */
+    body.dark-mode .nav-links a {
+        background-color: #222 !important;
+        color: #ffffff !important;
+        border-color: #444 !important;
+    }
+
+    /* EL CAMBIO A NEÓN: Pestaña activa y cuando pasas el mouse */
+    body.dark-mode .nav-links a.active,
+    body.dark-mode .nav-links a:hover {
+        background-color: #2ecc71 !important;
+        color: #000000 !important;
+        /* Texto negro para que se lea bien */
+        border-color: #2ecc71 !important;
+        box-shadow: 0 0 12px rgba(12, 235, 161, 0.4) !important;
+    }
+
+    /* Opciones de idioma y reloj en gris claro */
+    body.dark-mode .nav-options span {
+        color: #aaa !important;
+    }
+</style>
+
+<header class="navbar">
+    <div class="nav-brand">
+        <img src="" alt="Logo" onerror="this.style.display='none'">
+        <div class="nav-brand-text">
+            <h1 class="nav-title">TEFTI</h1>
+            <div class="nav-subtitle">PLATAFORMA INTEGRAL DE SERVICIOS</div>
+            <div class="nav-verified">✔ VERIFIED BY TILINES.WORK</div>
+        </div>
+    </div>
+    <nav class="nav-links">
+        <a href="index.html" id="nav-inicio">🏠 INICIO</a>
+        <a href="chatbot.html" id="nav-chatbot">💬 CHATBOT</a>
+        <a href="locales.html" id="nav-locales">📍 LOCALES</a>
+        <a href="cuenta.html" id="nav-cuenta">👤 MI CUENTA</a>
+    </nav>
+    <div class="nav-options">
+
+        <a href="app.html" id="nav-btn-login" class="btn-login-nav" onclick="if(localStorage.getItem('tefti_sesion')==='invitado') localStorage.removeItem('tefti_sesion');">Iniciar Sesión</a>
+        <a href="Configuracion.html" id="nav-btn-config" style="display: none;">⚙️</a>
+    </div>
+</header>

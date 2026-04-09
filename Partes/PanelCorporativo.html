@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Corporativo - TEFTI</title>
+    <style>
+        :root {
+            --primary-color: #27ae60;
+            --corp-dark: #2c3e50;
+            --bg-light: #f4f7f6;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: var(--bg-light);
+            color: #333;
+        }
+        .sidebar {
+            width: 260px;
+            background: var(--corp-dark);
+            height: 100vh;
+            position: fixed;
+            color: white;
+            padding: 30px 20px;
+            box-sizing: border-box;
+        }
+        .sidebar-logo { text-align: center; margin-bottom: 40px; }
+        .sidebar-logo img { height: 45px; }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-menu li:hover { background: var(--primary-color); }
+        .sidebar-menu li.active { background: var(--primary-color); font-weight: bold; }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 40px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .welcome h1 { margin: 0; font-size: 1.5rem; color: var(--corp-dark); }
+        .welcome p { margin: 5px 0 0 0; color: #777; font-size: 0.9rem; }
+
+        .promo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .promo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .promo-header h2 { margin: 0; color: var(--corp-dark); }
+        .btn-add {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-add:hover { transform: scale(1.05); background: #219150; }
+
+        .promos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .promo-item {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .promo-item img { width: 100%; height: 150px; object-fit: cover; }
+        .promo-info { padding: 15px; }
+        .promo-info h4 { margin: 0 0 5px 0; color: var(--corp-dark); }
+        .promo-info p { margin: 0; font-size: 0.85rem; color: #666; }
+        .promo-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 15px;
+            border-top: 1px solid #f9f9f9;
+        }
+        .btn-delete { color: #e74c3c; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        .input-tefti {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <img src="/img/Logo.png" alt="TEFTI">
+    </div>
+    <ul class="sidebar-menu">
+        <li class="active">🏷️ Mis Promociones</li>
+        <li onclick="window.location.href='Configuracion.html'">⚙️ Ajustes</li>
+        <li onclick="logoutCorp()" style="margin-top: 40px; color: #ff7675;">🚪 Cerrar Sesión</li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="header">
+        <div class="welcome">
+            <h1 id="corpNombre">Cargando Empresa...</h1>
+            <p>Portal de Gestión para Grandes Marcas</p>
+        </div>
+        <div class="user-info" id="corpCorreo" style="font-weight: 600; color: var(--corp-dark);"></div>
+    </div>
+
+    <!-- MÉTRICAS Y QR -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 30px;">
+        <div class="promo-card">
+            <div class="promo-header">
+                <h2>📈 Resumen de Actividad</h2>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <div style="flex: 1; background: #f8f9fa; padding: 20px; border-radius: 12px; text-align: center; border: 1px solid #eee;">
+                    <div id="stat-visitas" style="font-size: 2rem; font-weight: bold; color: var(--primary-color);">0</div>
+                    <div style="font-size: 0.8rem; color: #777; text-transform: uppercase;">Visitas al Perfil</div>
+                </div>
+                <div style="flex: 1; background: #f8f9fa; padding: 20px; border-radius: 12px; text-align: center; border: 1px solid #eee;">
+                    <div id="stat-sellos" style="font-size: 2rem; font-weight: bold; color: var(--primary-color);">0</div>
+                    <div style="font-size: 0.8rem; color: #777; text-transform: uppercase;">Sellos Emitidos</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="promo-card" style="text-align: center;">
+            <h3 style="margin-top: 0; color: var(--corp-dark);">🎫 TEFTI PASS QR</h3>
+            <p style="font-size: 0.8rem; color: #666;">Usa este código para que tus clientes ganen sellos.</p>
+            <div id="qr-container" style="margin: 15px 0;">
+                <div id="qr-loading" style="font-size: 0.8rem; color: #999;">Generando...</div>
+                <img id="qr-imagen" style="display:none; width: 140px; height: 140px; border: 2px solid var(--primary-color); border-radius: 10px; padding: 5px;">
+            </div>
+            <button onclick="descargarQR()" style="background: none; border: 1px solid #ccc; padding: 5px 15px; border-radius: 15px; font-size: 0.75rem; cursor: pointer;">Descargar QR</button>
+        </div>
+    </div>
+
+    <div class="promo-card">
+        <div class="promo-header">
+            <h2>Gestión de Ofertas</h2>
+            <button class="btn-add" onclick="abrirModal()">+ Nueva Promoción</button>
+        </div>
+        <div id="contenedorPromos" class="promos-grid">
+            <!-- Cargando... -->
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PARA NUEVA OFERTA -->
+<div id="modalPromo" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitulo">Publicar Nueva Oferta</h3>
+        
+        <label>Título de la Oferta</label>
+        <input type="text" id="of-titulo" class="input-tefti" placeholder="Ej: 2x1 en hamburguesas">
+        
+        <label>Descripción</label>
+        <textarea id="of-desc" class="input-tefti" style="height: 80px;" placeholder="Detalles de la promo..."></textarea>
+        
+        <div style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label>Descuento (Eje: 20% OFF)</label>
+                <input type="text" id="of-desc-pct" class="input-tefti" placeholder="20% OFF">
+            </div>
+            <div style="flex: 1;">
+                <label>Válida hasta</label>
+                <input type="date" id="of-fecha" class="input-tefti">
+            </div>
+        </div>
+
+        <label>Imagen de la Oferta</label>
+        <input type="file" id="of-file" class="input-tefti">
+
+        <div class="modal-footer">
+            <button class="btn-add" style="background: #999;" onclick="cerrarModal()">Cancelar</button>
+            <button class="btn-add" id="btnGuardarPromo">Publicar Ahora</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const correo = localStorage.getItem('tefti_correo_corp');
+    const nombre = localStorage.getItem('tefti_nombre_corp');
+
+    if(!correo) window.location.href = 'login-corporativo.html';
+
+    document.getElementById('corpNombre').innerText = `Hola, ${nombre} 👋`;
+    document.getElementById('corpCorreo').innerText = correo;
+
+    function abrirModal() { document.getElementById('modalPromo').style.display = 'flex'; }
+    function cerrarModal() { document.getElementById('modalPromo').style.display = 'none'; }
+
+    async function cargarDatosBasicos() {
+        try {
+            const res = await fetch(`/api/corporativos/${encodeURIComponent(correo)}`);
+            const data = await res.json();
+            
+            // Stats
+            document.getElementById('stat-visitas').innerText = data.visitas || 0;
+            document.getElementById('stat-sellos').innerText = data.sellosEmitidos || 0;
+            
+            // QR
+            if(data.qrToken) {
+                const urlEscaneo = `${window.location.origin}/escanear.html?token=${data.qrToken}`;
+                const urlQR = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(urlEscaneo)}`;
+                const img = document.getElementById('qr-imagen');
+                img.src = urlQR;
+                img.onload = () => {
+                    document.getElementById('qr-loading').style.display = 'none';
+                    img.style.display = 'inline-block';
+                };
+            }
+
+            // Ofertas
+            renderizarOfertas(data.ofertas || []);
+        } catch(e) { console.error(e); }
+    }
+
+    function descargarQR() {
+        const img = document.getElementById('qr-imagen');
+        if(!img.src) return;
+        const a = document.createElement('a');
+        a.href = img.src;
+        a.download = `tefti-pass-qr-${nombre}.png`;
+        a.target = '_blank';
+        a.click();
+    }
+
+    function renderizarOfertas(ofertas) {
+        const cont = document.getElementById('contenedorPromos');
+        if(ofertas.length === 0) {
+            cont.innerHTML = `<p style="text-align:center; grid-column: 1/-1; color:#999;">No hay promociones activas todavía.</p>`;
+            return;
+        }
+        cont.innerHTML = ofertas.map(o => `
+            <div class="promo-item">
+                ${o.imagenUrl ? `<img src="${o.imagenUrl}">` : `<div style="height:150px; background:#eee; display:flex; align-items:center; justify-content:center; color:#ccc;">Sin imagen</div>`}
+                <div class="promo-info">
+                    <h4>${o.titulo}</h4>
+                    <span style="background: #27ae60; color:white; font-size:0.7rem; padding:2px 8px; border-radius:10px;">${o.descuento || 'Oferta'}</span>
+                    <p style="margin-top:10px;">${o.descripcion || ''}</p>
+                </div>
+                <div class="promo-actions">
+                    <span class="btn-delete" onclick="eliminarOferta('${o._id}')">ELIMINAR</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    document.getElementById('btnGuardarPromo').addEventListener('click', async () => {
+        const btn = document.getElementById('btnGuardarPromo');
+        btn.disabled = true;
+        btn.innerText = 'Subiendo...';
+
+        const file = document.getElementById('of-file').files[0];
+        let imageUrl = '';
+
+        if(file) {
+            const formData = new FormData();
+            formData.append('imagen', file);
+            const upRes = await fetch('/api/upload', { method: 'POST', body: formData });
+            const upData = await upRes.json();
+            imageUrl = upData.url;
+        }
+
+        const payload = {
+            titulo: document.getElementById('of-titulo').value,
+            descripcion: document.getElementById('of-desc').value,
+            descuento: document.getElementById('of-desc-pct').value,
+            fechaFin: document.getElementById('of-fecha').value,
+            imagenUrl: imageUrl
+        };
+
+        try {
+            // Usamos la ruta refinada con query params
+            const res = await fetch(`/api/corporativos/ofertas/publicar?correo=${encodeURIComponent(correo)}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if(res.ok) {
+                const data = await res.json();
+                renderizarOfertas(data.ofertas);
+                cerrarModal();
+                // Limpiar form
+                document.getElementById('of-titulo').value = '';
+                document.getElementById('of-desc').value = '';
+                document.getElementById('of-file').value = '';
+            } else {
+                alert("Error al publicar la oferta");
+            }
+        } catch(e) { alert("Error de red"); }
+        btn.disabled = false;
+        btn.innerText = 'Publicar Ahora';
+    });
+
+    async function eliminarOferta(id) {
+        if(!confirm("¿Eliminar promoción?")) return;
+        try {
+            const res = await fetch(`/api/corporativos/ofertas/quitar?correo=${encodeURIComponent(correo)}&ofertaId=${id}`, { method: 'DELETE' });
+            if(res.ok) {
+                const data = await res.json();
+                renderizarOfertas(data.ofertas);
+            }
+        } catch(e) { alert("Error"); }
+    }
+
+    function logoutCorp() {
+        localStorage.removeItem('tefti_sesion_corp');
+        localStorage.removeItem('tefti_correo_corp');
+        window.location.href = 'login-corporativo.html';
+    }
+
+    cargarDatosBasicos();
+</script>
+
+</body>
+</html>

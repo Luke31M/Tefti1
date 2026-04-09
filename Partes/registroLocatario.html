@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Registro de Local - TEFTI</title>
+    <link rel="stylesheet" href="estilos.css">
+
+    <style>
+        body {
+            background-color: #F8F9FA;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            font-family: sans-serif;
+            padding: 40px 0;
+            overflow-y: auto;
+        }
+
+        .tarjeta-registro {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 380px;
+            text-align: center;
+        }
+
+        /* --- Barra de Progreso Mejorada --- */
+        .progreso-contenedor {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+            padding: 0 10px;
+        }
+
+        .progreso-linea-fondo {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            right: 15px;
+            height: 4px;
+            background-color: #e0e0e0;
+            z-index: 1;
+            transform: translateY(-50%);
+            border-radius: 2px;
+        }
+
+        .progreso-linea-activa {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            height: 4px;
+            background-color: #27ae60;
+            z-index: 1;
+            transform: translateY(-50%);
+            border-radius: 2px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .paso-indicador {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid #e0e0e0;
+            color: #888;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: all 0.4s ease;
+            font-size: 0.9rem;
+        }
+
+        .paso-indicador.activo {
+            border-color: #2ecc71;
+            color: #27ae60;
+            box-shadow: 0 0 10px rgba(139, 195, 74, 0.4);
+            transform: scale(1.1);
+        }
+
+        .paso-indicador.completado {
+            background-color: #27ae60;
+            border-color: #27ae60;
+            color: white;
+        }
+
+        /* --- Animaciones y Formularios --- */
+        .paso-formulario {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .paso-formulario.activo {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .etiqueta-campo {
+            font-size: 0.85rem;
+            color: #27ae60;
+            text-align: left;
+            width: 100%;
+            font-weight: 600;
+            margin-bottom: 5px;
+            margin-top: 10px;
+        }
+
+        .input-tefti {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid #ced4da;
+            background-color: #f8f9fa;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .input-tefti:focus {
+            outline: none;
+            border-color: #2ecc71;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(139, 195, 74, 0.2);
+        }
+
+        .input-error {
+            border-color: #dc3545 !important;
+            background-color: #fff8f8 !important;
+        }
+
+        textarea.input-tefti {
+            resize: vertical;
+            min-height: 70px;
+            font-family: inherit;
+        }
+
+
+        .fila-botones {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-secundario {
+            background-color: #e0e0e0;
+            color: #333;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-secundario:hover {
+            background-color: #d0d0d0;
+        }
+
+        .btn-tefti-solido {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background-color: #27ae60;
+            color: white;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-tefti-solido:hover {
+            background-color: #1e8449;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="tarjeta-registro">
+        <h2 style="color: #27ae60; margin-top: 0; margin-bottom: 20px; font-size: 1.8rem;">Fichar Local</h2>
+
+        <div class="progreso-contenedor">
+            <div class="progreso-linea-fondo"></div>
+            <div class="progreso-linea-activa" id="linea-progreso"></div>
+            <div class="paso-indicador activo" id="ind-1">1</div>
+            <div class="paso-indicador" id="ind-2">2</div>
+            <div class="paso-indicador" id="ind-3">3</div>
+        </div>
+
+        <div class="contenedor-manual">
+
+            <div id="paso-1" class="paso-formulario activo">
+                <div class="etiqueta-campo">Información Principal</div>
+                <input type="text" id="nombreLocal" placeholder="Nombre del negocio" class="input-tefti" style="margin-bottom: 10px;">
+                <input type="email" id="correoLocal" placeholder="Correo del propietario" class="input-tefti" style="margin-bottom: 10px;">
+                <input type="password" id="passwordLocal" placeholder="Crea una contraseña" class="input-tefti" style="margin-bottom: 10px;">
+                <input type="tel" id="telefonoLocal" placeholder="Teléfono de contacto" class="input-tefti">
+
+                <button type="button" class="btn-tefti-solido" onclick="cambiarPaso(1, 2)"
+                    style="margin-top: 20px;">Siguiente</button>
+                <button type="button" onclick="window.location.href='app.html'"
+                    style="background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; margin-top: 15px;">Cancelar</button>
+            </div>
+
+            <div id="paso-2" class="paso-formulario">
+                <div class="etiqueta-campo">Ingresa tu dirección:</div>
+                <input type="text" id="buscador-direccion" placeholder="Ej. Calle Hidalgo 123..." class="input-tefti">
+
+                <div class="fila-botones">
+                    <button type="button" class="btn-secundario" onclick="cambiarPaso(2, 1)">Atrás</button>
+                    <button type="button" class="btn-tefti-solido" onclick="cambiarPaso(2, 3)">Siguiente</button>
+                </div>
+            </div>
+
+            <div id="paso-3" class="paso-formulario">
+                <div class="etiqueta-campo">Historia o Descripción:</div>
+                <textarea id="descripcionLocal" placeholder="Cuéntanos sobre tu local..."
+                    class="input-tefti"></textarea>
+
+                <div class="etiqueta-campo">Fotos del Local</div>
+                <input type="file" id="imagenesLocal" multiple accept="image/*" class="input-tefti"
+                    style="padding: 9px 20px; background: white;">
+
+                <div class="etiqueta-campo">Menú y Precios:</div>
+                <textarea id="menuLocal" placeholder="Ej. Tacos - $15" class="input-tefti"></textarea>
+
+                <div class="fila-botones">
+                    <button type="button" class="btn-secundario" onclick="cambiarPaso(3, 2)">Atrás</button>
+                    <button type="button" id="btn-guardar-local" class="btn-tefti-solido"
+                        onclick="Registro()">Registrar</button>
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function cambiarPaso(actual, siguiente) {
+            // Validación de campos vacíos al avanzar
+            if (siguiente > actual) {
+                const pasoActualDiv = document.getElementById(`paso-${actual}`);
+                const inputs = pasoActualDiv.querySelectorAll('.input-tefti:not([type="file"])');
+                let valido = true;
+
+                inputs.forEach(input => {
+                    if (input.value.trim() === '') {
+                        input.classList.add('input-error');
+                        valido = false;
+                    } else {
+                        input.classList.remove('input-error');
+                    }
+                });
+
+                if (!valido) {
+                    alert("Por favor, llena todos los campos marcados en rojo antes de continuar.");
+                    return;
+                }
+            }
+
+            // Cambiar formulario
+            document.getElementById(`paso-${actual}`).classList.remove('activo');
+            document.getElementById(`paso-${siguiente}`).classList.add('activo');
+
+            // Actualizar indicadores visuales
+            document.getElementById(`ind-${actual}`).classList.remove('activo');
+            if (siguiente > actual) {
+                document.getElementById(`ind-${actual}`).classList.add('completado');
+            } else {
+                document.getElementById(`ind-${actual}`).classList.remove('completado');
+            }
+            document.getElementById(`ind-${siguiente}`).classList.add('activo');
+
+            // Actualizar línea de progreso
+            const porcentajes = { 1: '0%', 2: '50%', 3: '100%' };
+            document.getElementById('linea-progreso').style.width = porcentajes[siguiente];
+        }
+
+        // Quitar borde rojo al escribir
+        document.querySelectorAll('.input-tefti').forEach(input => {
+            input.addEventListener('input', function () {
+                this.classList.remove('input-error');
+            });
+        });
+
+        function Registro() {
+            if (confirm("¿Estás seguro que deseas registrar tu local?")) {
+                localStorage.removeItem('tefti_sesion');
+
+                // Guardar la información principal para el backend
+                const datosLocatario = {
+                    nombre: document.getElementById('nombreLocal')?.value || '',
+                    correo: document.getElementById('correoLocal')?.value || '',
+                    password: document.getElementById('passwordLocal')?.value || '',
+                    telefono: document.getElementById('telefonoLocal')?.value || '',
+                    direccion: document.getElementById('buscador-direccion')?.value || '',
+                    descripcion: document.getElementById('descripcionLocal')?.value || '',
+                    menu: document.getElementById('menuLocal')?.value || ''
+                };
+                localStorage.setItem('tefti_datos_locatario', JSON.stringify(datosLocatario));
+
+                window.location.href = 'formulario de registro.html';
+            }
+        }
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

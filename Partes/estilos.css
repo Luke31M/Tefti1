@@ -1,0 +1,643 @@
+/* --- CONFIGURACIÓN BÁSICA --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #F8F9FA; /* Tu fondo cremita */
+    font-family: sans-serif;
+    overflow-x: hidden; /* Evita el scroll horizontal únicamente */
+}
+
+/* Clases generales para ocultar/mostrar pantallas */
+.pantallaF {
+    display: none; /* Oculto por defecto */
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.activaF {
+    display: flex; /* Muestra la pantalla activa y centra el contenido */
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- ANIMACIÓN PANTALLA 1 (INTRO) MEJORADA --- */
+#pantallaIntroF {
+    z-index: 10;
+    background-color: #F8F9FA; /* El fondo cremita se queda base */
+}
+
+/* Contenedor que pone las 5 barras una al lado de la otra */
+.cortinasVerdesF {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex; 
+    z-index: -1;
+}
+
+/* Estilo base para todas las barras */
+.barraVerdeF {
+    flex: 1; /* Cada barra toma el 20% de la pantalla */
+    height: 100%;
+    animation: subirCortinaF 1.2s ease-in-out forwards;
+}
+
+/* 5 tonos de verde distintos (del más oscuro al más claro) y retrasos escalonados */
+.barra1F { background-color: #1e8449; animation-delay: 0.1s; }
+.barra2F { background-color: #27ae60; animation-delay: 0.3s; }
+.barra3F { background-color: #27ae60; animation-delay: 0.5s; }
+.barra4F { background-color: #2ecc71; animation-delay: 0.7s; }
+.barra5F { background-color: #CDDC39; animation-delay: 0.9s; }
+
+@keyframes subirCortinaF {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); } /* Se deslizan hacia arriba */
+}
+
+/* El logo de TEFTI */
+#logoAnimadoF {
+    width: 280px; 
+    opacity: 0; 
+    transform: scale(0.5); 
+    /* Tarda un poquito más en aparecer para que pasen las barras primero */
+    animation: latidoLogoF 1.5s ease-out 1.2s forwards; 
+}
+
+@keyframes latidoLogoF {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.1); } 
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* --- LOS PASOS DE LAS ANIMACIONES --- */
+@keyframes revelarCremitaF {
+    0% { transform: translateY(0); opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(-100%); opacity: 0; } /* El verde se desliza hacia arriba descubriendo el cremita */
+}
+
+@keyframes latidoLogoF {
+    0% { opacity: 0; transform: scale(0.5); }
+    70% { opacity: 1; transform: scale(1.1); } /* Hace un pequeño rebote */
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* --- PANTALLA 2: SELECCIÓN DE IDIOMAS --- */
+.contenedorIdiomasF {
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    max-width: 800px; /* Para que no se estire demasiado en pantallas grandes */
+}
+
+.tituloIdiomaF {
+    color: #27ae60; /* Tu verde oscuro */
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.cuadriculaBanderasF {
+    display: grid;
+    /* Esto hace que las banderas se acomoden solas dependiendo del tamaño de la pantalla */
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+.botonBanderaF {
+    background-color: white;
+    border: 2px solid transparent; /* Borde invisible por defecto */
+    border-radius: 15px; /* Bordes redondeaditos */
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombrita para que resalte del cremita */
+    transition: transform 0.2s, border-color 0.2s; /* Animación suave al pasar el mouse */
+    width: 100%;
+    max-width: 140px;
+}
+
+.botonBanderaF img {
+    width: 60px; /* Tamaño uniforme para todas las banderas */
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.botonBanderaF span {
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* El efecto al pasar el mouse o tocar */
+.botonBanderaF:hover {
+    transform: translateY(-5px); /* Se levanta un poco */
+    border-color: #2ecc71; /* El borde se pinta del verde claro que elegiste */
+}
+
+/* --- PANTALLA 3: LOGIN --- */
+.contenedorLoginF {
+    background-color: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Sombra suave */
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.logoLoginF {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.tituloLoginF {
+    color: #27ae60; /* Tu verde oscuro */
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.subtituloLoginF {
+    color: #666; /* Gris sutil */
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.botonesAccesoF {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre botones */
+}
+
+/* Estilo del botón de Google */
+.botonGoogleF {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.botonGoogleF:hover {
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.botonGoogleF img {
+    width: 24px; /* Tamaño perfecto para la 'G' */
+}
+
+/* La línea separadora que dice "o" */
+.separadorF {
+    position: relative;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.separadorF::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #eee;
+    z-index: 1;
+}
+
+.separadorF span {
+    position: relative;
+    background-color: white;
+    padding: 0 10px;
+    color: #aaa;
+    font-size: 14px;
+    z-index: 2;
+}
+
+/* Estilo del botón de Invitado (Contorno verde) */
+.botonInvitadoF {
+    background-color: transparent;
+    border: 2px solid #2ecc71; /* Tu verde claro */
+    color: #27ae60;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.botonInvitadoF:hover {
+    background-color: #2ecc71;
+    color: white;
+}
+
+/* El enlace discreto para Locatarios abajo del todo */
+.botonLocatariosF {
+    margin-top: 25px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.botonLocatariosF:hover {
+    color: #27ae60;
+}
+
+/* --- PANTALLA 4: ENTRADA LOCATARIOS --- */
+.contenedorLocatariosF {
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+}
+
+/* Tipografía gruesa y cursiva para dar velocidad/dinamismo */
+.tituloLocatariosF {
+    color: #27ae60;
+    font-size: 32px;
+    text-transform: uppercase;
+    font-style: italic; 
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+.subtituloLocatariosF {
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+.tarjetasLocatariosF {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap; /* En celulares, pone una tarjeta abajo de la otra solita */
+}
+
+/* El diseño de las dos tarjetas */
+.tarjetaOpcionF {
+    background-color: white;
+    border-radius: 15px;
+    padding: 30px;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+    border: 2px solid transparent;
+    transition: transform 0.3s, border-color 0.3s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Efecto al pasar el mouse */
+.tarjetaOpcionF:hover {
+    transform: translateY(-5px);
+    border-color: #2ecc71; /* Brilla en verde claro */
+}
+
+.tarjetaOpcionF h3 {
+    color: #333;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.tarjetaOpcionF p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* Hacemos que la tarjeta de registro resalte un poco más */
+.destacadaF {
+    border: 2px solid #e0e0e0; 
+}
+
+/* Los botones dentro de las tarjetas */
+.botonAccionF {
+    background-color: #27ae60; /* Verde oscuro */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+}
+
+.botonAccionF:hover {
+    opacity: 0.9;
+}
+
+/* Toque dorado mundialista para el registro */
+.botonDoradoF {
+    background-color: #FBC02D; 
+    color: #333;
+}
+
+.botonVolverF {
+    margin-top: 30px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.botonVolverF:hover {
+    color: #27ae60;
+}
+
+/* --- PANTALLA 5: FORMULARIO DE REGISTRO --- */
+.contenedorFormularioF {
+    background-color: white;
+    width: 90%;
+    max-width: 600px; /* Un poco más ancho para que quepa todo el texto bien */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    max-height: 90vh; /* Altura máxima de la pantalla */
+    overflow-y: auto; /* Permite hacer scroll si el contenido es muy largo */
+}
+
+.tituloFormularioF {
+    color: #27ae60;
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.subtituloFormularioF {
+    text-align: center;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.seccionFormularioF {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.seccionFormularioF label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* Estilos para las cajas de texto donde escribe el usuario */
+.inputTextoF, .inputAreaF {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-family: inherit;
+    outline: none; /* Quita el borde feo que ponen algunos navegadores */
+}
+
+.inputTextoF:focus, .inputAreaF:focus {
+    border-color: #2ecc71; /* Se pone verde cuando el usuario está escribiendo */
+}
+
+.inputAreaF {
+    resize: vertical; /* Solo deja que la hagan más grande hacia abajo */
+    min-height: 80px;
+}
+
+/* El espacio simulado para el mapa */
+.mapaPlaceholderF {
+    width: 100%;
+    height: 150px;
+    background-color: #e0e0e0;
+    border: 2px dashed #999;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    font-weight: bold;
+}
+
+/* --- EL MENÚ (JUGADA PSICOLÓGICA) --- */
+.opcionesMenuF {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Opción de Texto (Premium y Llamativa) */
+.opcionMenuDestacadaF {
+    border: 2px solid #FBC02D; /* Borde dorado */
+    background-color: #FFFDE7; /* Fondo amarillito muy tenue */
+    padding: 20px 15px 15px 15px;
+    border-radius: 10px;
+    position: relative; /* Necesario para acomodar la etiqueta arriba */
+}
+
+.etiquetaRecomendadoF {
+    position: absolute;
+    top: -12px;
+    left: 15px;
+    background-color: #FBC02D;
+    color: #333;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+.opcionMenuDestacadaF h4 { margin-bottom: 10px; color: #333; }
+
+.botonSecundarioF {
+    background-color: transparent;
+    border: 2px solid #2ecc71;
+    color: #27ae60;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 5px;
+    transition: background-color 0.2s;
+}
+
+.botonSecundarioF:hover {
+    background-color: #2ecc71;
+    color: white;
+}
+
+/* Opción de Imagen (La Aburrida) */
+.opcionMenuRapidaF {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #fafafa;
+    text-align: center;
+}
+
+.opcionMenuRapidaF h4 { margin-bottom: 5px; color: #555; }
+.opcionMenuRapidaF p { font-size: 12px; color: #888; margin-bottom: 15px; }
+
+.botonGrisF {
+    background-color: #e0e0e0;
+    color: #555;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* --- PANTALLA 6: APP PRINCIPAL (SIMULADA) --- */
+.contenedorAppF {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbarSimuladaF {
+    background-color: #27ae60;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.botonRegistroFlotanteF {
+    background-color: #FBC02D; /* Dorado para que resalte */
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    animation: pulsoF 2s infinite; /* Un pequeño pulso para llamar la atención */
+}
+
+@keyframes pulsoF {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.contenidoSimuladoF {
+    padding: 20px;
+    color: #444;
+}
+
+.tarjetaDummyF {
+    width: 100%;
+    height: 100px;
+    background-color: #e0e0e0;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+/* 1. Botón de Google (Color de borde y SEPARACIÓN superior) */
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    background-color: white;
+    border-radius: 25px;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+    
+    /* TUS COLORES */
+    border: 2px solid #2ecc71; /* Verde Lima */
+    
+    /* SEPARACIÓN: Agregamos margen arriba para alejarlo del botón "Entrar" */
+    margin-top: 15px; 
+    
+    transition: all 0.2s ease;
+}
+
+/* 2. Contenedor de los inputs */
+.contenedor-manual {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Quitamos el margen superior para que los inputs suban un poco más */
+    margin-top: 0; 
+}
+
+/* 3. Estilo para los Inputs */
+.input-tefti {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.input-tefti:focus {
+    outline: none;
+    border-color: #2ecc71; /* Verde Lima al hacer clic */
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(139, 195, 74, 0.2);
+}
+
+/* 4. Botón "Entrar" Sólido */
+.btn-tefti-solido {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #27ae60; /* Verde Oscuro */
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    /* Espacio sutil debajo por si acaso */
+    margin-bottom: 15px; 
+}
+
+.btn-tefti-solido:hover {
+    background-color: #1e8449;
+}

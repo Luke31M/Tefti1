@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Formulario de Registro - TEFTI</title>
+    <link rel="stylesheet" href="estilos.css">
+    <script src="config.js"></script>
+
+    <style>
+        body {
+            background-color: #F8F9FA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .tarjeta-registro {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .titulo-form {
+            color: #27ae60;
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.8rem;
+        }
+
+        .subtitulo-form {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .etiqueta-campo {
+            font-size: 0.9rem;
+            color: #27ae60;
+            text-align: left;
+            width: 100%;
+            font-weight: 600;
+            margin-bottom: 8px;
+            margin-top: 15px;
+            display: block;
+        }
+
+        .input-tefti {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background-color: #f8f9fa;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .input-tefti:focus {
+            outline: none;
+            border-color: #2ecc71;
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(139, 195, 74, 0.15);
+        }
+
+        /* Ocultar secciones específicas por defecto */
+        .seccion-dinamica {
+            display: none;
+            background: #fafaf5;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px dashed #2ecc71;
+            margin-top: 15px;
+            text-align: left;
+            animation: fadeInDown 0.4s ease;
+        }
+
+        .seccion-dinamica.activa {
+            display: block;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .checkbox-grupo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .checkbox-grupo input[type="checkbox"] {
+            accent-color: #27ae60;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        label {
+            cursor: pointer;
+            color: #444;
+            font-size: 0.9rem;
+        }
+
+        .fila-botones {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-secundario {
+            background-color: #f0f0f0;
+            color: #555;
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-secundario:hover {
+            background-color: #e0e0e0;
+        }
+
+        .btn-tefti-solido {
+            flex: 2;
+            padding: 12px;
+            border: none;
+            background-color: #27ae60;
+            color: white;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-tefti-solido:hover {
+            background-color: #1e8449;
+        }
+
+        .btn-tefti-solido:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="tarjeta-registro">
+        <h2 class="titulo-form">Detalles de tu Local</h2>
+        <p class="subtitulo-form">Cuéntanos más sobre el giro de tu negocio en TEFTI</p>
+
+        <form id="formulario-especifico">
+            <label class="etiqueta-campo">¿Cuál es el giro de tu local?</label>
+            <!-- Este selector revelará u ocultará partes del formulario -->
+            <select id="select-categoria" class="input-tefti" onchange="mostrarCamposCategoria(this.value)">
+                <option value="">Selecciona el rubro principal...</option>
+                <option value="gastronomia">Gastronomía / Restaurante</option>
+                <option value="ropa">Ropa / Boutiques</option>
+                <option value="joyeria">Joyería</option>
+                <option value="artesanias">Artesanías / Souvenirs</option>
+            </select>
+
+            <!-- SECCIÓN 1: GASTRONOMÍA -->
+            <div id="seccion-gastronomia" class="seccion-dinamica">
+                <h3 style="color: #27ae60; margin-top: 0; font-size: 1.1rem; border-bottom: 2px solid #2ecc71; padding-bottom: 5px;">Gastronomía</h3>
+                
+                <label class="etiqueta-campo">Tipo de comida o Especialidad</label>
+                <input type="text" class="input-tefti" placeholder="Ej: Tacos, Mariscos, Comida Vegana...">
+                
+                <div class="checkbox-grupo">
+                    <input type="checkbox" id="domicilio">
+                    <label for="domicilio">Cuento con servicio a domicilio</label>
+                </div>
+
+                <div class="checkbox-grupo">
+                    <input type="checkbox" id="reserva">
+                    <label for="reserva">Aceptamos reservaciones previas</label>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: ROPA Y MIODA -->
+            <div id="seccion-ropa" class="seccion-dinamica">
+                <h3 style="color: #27ae60; margin-top: 0; font-size: 1.1rem; border-bottom: 2px solid #2ecc71; padding-bottom: 5px;">Ropa y Moda</h3>
+
+                <label class="etiqueta-campo">Enfoque de la tienda</label>
+                <select class="input-tefti">
+                    <option>Moda Femenina</option>
+                    <option>Moda Masculina</option>
+                    <option>Ropa Infantil</option>
+                    <option>Unisex / Mixto</option>
+                </select>
+                
+                <div class="checkbox-grupo">
+                    <input type="checkbox" id="probadores">
+                    <label for="probadores">Contamos con probadores físicos</label>
+                </div>
+                <div class="checkbox-grupo">
+                    <input type="checkbox" id="tallasExtras">
+                    <label for="tallasExtras">Manejamos tallas extras (Plus Size)</label>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: JOYERÍA -->
+            <div id="seccion-joyeria" class="seccion-dinamica">
+                <h3 style="color: #27ae60; margin-top: 0; font-size: 1.1rem; border-bottom: 2px solid #2ecc71; padding-bottom: 5px;">Joyería</h3>
+
+                <label class="etiqueta-campo">Materiales y Metales que manejan</label>
+                <input type="text" class="input-tefti" placeholder="Ej: Oro de 14k, Plata 925, Acero">
+                
+                <div class="checkbox-grupo">
+                    <input type="checkbox" id="reparaciones">
+                    <label for="reparaciones">Hacemos reparaciones y mantenimiento</label>
+                </div>
+                <div class="checkbox-grupo">
+                    <input type="checkbox" id="certificados">
+                    <label for="certificados">Otorgamos certificado de autenticidad</label>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 4: ARTESANÍAS -->
+            <div id="seccion-artesanias" class="seccion-dinamica">
+                <h3 style="color: #27ae60; margin-top: 0; font-size: 1.1rem; border-bottom: 2px solid #2ecc71; padding-bottom: 5px;">Artesanías</h3>
+
+                <label class="etiqueta-campo">Técnica o Material Base</label>
+                <input type="text" class="input-tefti" placeholder="Ej: Barro negro, Tejidos, Madera tallada">
+                
+                <div class="checkbox-grupo">
+                    <input type="checkbox" id="hechoMano">
+                    <label for="hechoMano">100% hecho a mano por artesanos</label>
+                </div>
+                <div class="checkbox-grupo">
+                    <input type="checkbox" id="personalizados">
+                    <label for="personalizados">Se aceptan pedidos y diseños personalizados</label>
+                </div>
+            </div>
+
+            <!-- Horarios aplicable para todas las opciones -->
+            <div style="margin-top: 20px;">
+                <label class="etiqueta-campo">Horario habitual de la sucursal</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="time" id="hora-apertura" class="input-tefti" value="09:00">
+                    <span style="color: #555; font-weight: 500;">a</span>
+                    <input type="time" id="hora-cierre" class="input-tefti" value="18:00">
+                </div>
+            </div>
+
+            <div class="fila-botones">
+                <button type="button" class="btn-secundario" onclick="window.history.back()">Regresar</button>
+                <button type="button" class="btn-tefti-solido" onclick="finalizarRegistro()">Finalizar alta</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Función para mostrar / ocultar los inputs dependiendo del selector
+        function mostrarCamposCategoria(categoriaSeleccionada) {
+            // Ocultamos todas las secciones
+            const secciones = document.querySelectorAll('.seccion-dinamica');
+            secciones.forEach(seccion => {
+                seccion.classList.remove('activa');
+            });
+
+            // Mostramos solo la de la categoría seleccionada
+            if (categoriaSeleccionada) {
+                const seccionMostrar = document.getElementById('seccion-' + categoriaSeleccionada);
+                if (seccionMostrar) {
+                    seccionMostrar.classList.add('activa');
+                }
+            }
+        }
+
+        // Función final que completa el registro
+        async function finalizarRegistro() {
+            const categoria = document.getElementById('select-categoria').value;
+            if(!categoria) {
+                alert('Oops, por favor selecciona el giro de tu local para continuar.');
+                return;
+            }
+
+            // 1. Recolectar info de campos dinamicos dependiendo de la categoria
+            let detallesEspecificos = {};
+            if (categoria === 'gastronomia') {
+                detallesEspecificos.especialidad = document.querySelector('#seccion-gastronomia input[type="text"]').value;
+                detallesEspecificos.domicilio = document.getElementById('domicilio').checked;
+                detallesEspecificos.reserva = document.getElementById('reserva').checked;
+            } else if (categoria === 'ropa') {
+                detallesEspecificos.enfoque = document.querySelector('#seccion-ropa select').value;
+                detallesEspecificos.probadores = document.getElementById('probadores').checked;
+                detallesEspecificos.tallasExtras = document.getElementById('tallasExtras').checked;
+            } else if (categoria === 'joyeria') {
+                detallesEspecificos.materiales = document.querySelector('#seccion-joyeria input[type="text"]').value;
+                detallesEspecificos.reparaciones = document.getElementById('reparaciones').checked;
+                detallesEspecificos.certificados = document.getElementById('certificados').checked;
+            } else if (categoria === 'artesanias') {
+                detallesEspecificos.material = document.querySelector('#seccion-artesanias input[type="text"]').value;
+                detallesEspecificos.hechoMano = document.getElementById('hechoMano').checked;
+                detallesEspecificos.personalizados = document.getElementById('personalizados').checked;
+            }
+
+            // 2. Obtener general del formulario anterior ('registroLocatario.html')
+            const dataGuardada = localStorage.getItem('tefti_datos_locatario');
+            let formGeneral = {};
+            if (dataGuardada) {
+                formGeneral = JSON.parse(dataGuardada);
+            }
+
+            // 3. Crear el JSON gigante a enviar a MongoDB
+            const payload = {
+                nombre: formGeneral.nombre || 'Sin nombre asignado',
+                correo: formGeneral.correo || '',
+                password: formGeneral.password || '',
+                direccion: formGeneral.direccion || 'Dirección no especificada',
+                telefono: formGeneral.telefono || '',
+                descripcion: formGeneral.descripcion || '',
+                menu: formGeneral.menu || '',
+                categoria: categoria,
+                detallesEspecificos: detallesEspecificos,
+                horarios: {
+                    lunes: { apertura: document.getElementById('hora-apertura').value, cierre: document.getElementById('hora-cierre').value, cerrado: false },
+                    martes: { apertura: document.getElementById('hora-apertura').value, cierre: document.getElementById('hora-cierre').value, cerrado: false },
+                    miercoles: { apertura: document.getElementById('hora-apertura').value, cierre: document.getElementById('hora-cierre').value, cerrado: false },
+                    jueves: { apertura: document.getElementById('hora-apertura').value, cierre: document.getElementById('hora-cierre').value, cerrado: false },
+                    viernes: { apertura: document.getElementById('hora-apertura').value, cierre: document.getElementById('hora-cierre').value, cerrado: false },
+                    sabado: { apertura: document.getElementById('hora-apertura').value, cierre: document.getElementById('hora-cierre').value, cerrado: false },
+                    domingo: { apertura: document.getElementById('hora-apertura').value, cierre: document.getElementById('hora-cierre').value, cerrado: true }
+                }
+            };
+
+            // 4. Mandar la llamada fetch
+            try {
+                // Notificar al usuario que estamos cargando...
+                const btn = document.querySelector('.btn-tefti-solido');
+                const textoOriginal = btn.innerHTML;
+                btn.innerHTML = 'Guardando...';
+                btn.disabled = true;
+
+                const response = await fetch(API_URL + '/api/negocios/nuevo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    alert('¡Listo! La información de tu local se ha guardado exitosamente en nuestra base de datos.');
+                    localStorage.removeItem('tefti_datos_locatario'); // Limpiamos caché de seguridad
+                    localStorage.setItem('tefti_sesion_local', 'activa');
+                    localStorage.removeItem('tefti_sesion'); // Limpiar sesión de turista
+                    if (payload.correo) {
+                        localStorage.setItem('tefti_correo_local', payload.correo);
+                    }
+                    window.location.href = 'PanelLocal.html';
+                } else {
+                    const error = await response.json();
+                    console.error('Error de API:', error);
+                    alert('Hubo un error al guardar tu negocio. Revisa la consola para más detalles.');
+                    btn.innerHTML = textoOriginal;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error(error);
+                alert('No se pudo contactar con la base de datos. Verifica que el servidor backend (NodeJS) esté encendido.');
+                const btn = document.querySelector('.btn-tefti-solido');
+                btn.innerHTML = 'Finalizar alta';
+                btn.disabled = false;
+            }
+        }
+
+        // Leer la info aunque ya no hay selector local en la página anterior, 
+        // conservamos eventListener vacío por si acaso
+        document.addEventListener('DOMContentLoaded', () => {
+             // Lista para el futuro
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingreso a TEFTI</title>
+    <link rel="stylesheet" href="estilos.css">
+    <script src="config.js"></script>
+</head>
+
+<body>
+
+    <div id="pantallaIntroF" class="pantallaF activaF">
+        <div class="cortinasVerdesF">
+            <div class="barraVerdeF barra1F"></div>
+            <div class="barraVerdeF barra2F"></div>
+            <div class="barraVerdeF barra3F"></div>
+            <div class="barraVerdeF barra4F"></div>
+            <div class="barraVerdeF barra5F"></div>
+        </div>
+        <div class="contenedorLogoF">
+            <img src="/img/Logo.png" alt="Logo TEFTI" id="logoAnimadoF">
+        </div>
+    </div>
+
+    <div id="pantallaIdiomaF" class="pantallaF">
+        <div class="contenedorIdiomasF">
+            <h1 class="tituloIdiomaF">Elige tu idioma / Choose your language</h1>
+
+            <div class="cuadriculaBanderasF">
+                <button class="botonBanderaF" onclick="seleccionarIdiomaF('es')">
+                    <img src="/img/BMexico.png" alt="Bandera México">
+                    <span>Español</span>
+                </button>
+
+                <button class="botonBanderaF" onclick="seleccionarIdiomaF('en')">
+                    <img src="/img/BEUA.png" alt="Bandera EUA">
+                    <span>English</span>
+                </button>
+
+                <button class="botonBanderaF" onclick="seleccionarIdiomaF('ko')">
+                    <img src="/img/BKorea.png" alt="Bandera Corea">
+                    <span>한국어</span>
+                </button>
+
+                <button class="botonBanderaF" onclick="seleccionarIdiomaF('pt')">
+                    <img src="/img/BPorto.png" alt="Bandera Portugal">
+                    <span>Português</span>
+                </button>
+
+                <button class="botonBanderaF" onclick="seleccionarIdiomaF('af')">
+                    <img src="/img/Bsuda.png" alt="Bandera Sudáfrica">
+                    <span>Afrikaans</span>
+                </button>
+
+                <button class="botonBanderaF" onclick="seleccionarIdiomaF('ja')">
+                    <img src="/img/BJapon.png" alt="Bandera Japón">
+                    <span>日本語</span>
+                </button>
+
+                <button class="botonBanderaF" onclick="seleccionarIdiomaF('uz')">
+                    <img src="/img/BUzbekistan.png" alt="Bandera Uzbekistán">
+                    <span>O'zbek</span>
+                </button>
+
+                <button class="botonBanderaF" onclick="seleccionarIdiomaF('ar')">
+                    <img src="/img/BArabia.png" alt="Bandera Arabia Saudita">
+                    <span>العربية</span>
+                </button>
+
+                <button class="botonBanderaF" onclick="seleccionarIdiomaF('tn')">
+                    <img src="/img/ATunez.png" alt="Bandera Túnez">
+                    <span>Tounsi</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pantallaLoginF" class="pantallaF">
+        <div class="contenedorLoginF">
+            <img src="/img/Logo.png" alt="Logo TEFTI" class="logoLoginF">
+            <h2 class="tituloLoginF">¡Bienvenido a TEFTI!</h2>
+            <p class="subtituloLoginF">Ingresa para vivir la experiencia completa</p>
+
+            <div class="contenedor-manual">
+
+                <input type="email" id="correo" placeholder="Correo electrónico" class="input-tefti">
+                <input type="password" id="password" placeholder="Contraseña" class="input-tefti">
+
+                <button id="btn-registrar" class="btn-tefti-solido">
+                    Entrar
+                </button>
+            </div>
+
+            <div class="botonesAccesoF">
+                <button class="botonGoogleF" onclick="iniciarSesionGoogleF()">
+                    <img src="/img/GoogleLogo.png" alt="Logo Google">
+                    <span>Continuar con Google</span>
+                </button>
+
+                <div class="separadorF">
+                    <span>o</span>
+                </div>
+
+                <button class="botonInvitadoF" onclick="entrarInvitadoF()">
+                    <span>Saltar y continuar como invitado</span>
+                </button>
+            </div>
+
+            <button class="botonLocatariosF" onclick="irLocatariosF()">
+                Acceso para Locatarios
+            </button>
+
+        </div>
+    </div>
+
+    <div id="pantallaLocatariosIntroF" class="pantallaF">
+        <div class="contenedorLocatariosF">
+            <h2 class="tituloLocatariosF">Área de Locatarios</h2>
+            <p class="subtituloLocatariosF">Únete a la alineación titular de TEFTI</p>
+
+            <div class="tarjetasLocatariosF">
+                <div class="tarjetaOpcionF" onclick="mostrarLoginLocatarioF()">
+                    <h3>Iniciar Sesión</h3>
+                    <p>Para locatarios que ya forman parte de TEFTI y quieren gestionar sus negocios.</p>
+                    <button class="botonAccionF">Entrar al campo</button>
+                </div>
+
+                <div class="tarjetaOpcionF destacadaF" onclick="mostrarRegistroLocatarioF()">
+                    <h3>Registrar un Local</h3>
+                    <p>¿Aún no estás en TEFTI? Únete y muestra tu negocio a los turistas de todo el mundo.</p>
+                    <button class="botonAccionF botonDoradoF">Fichar mi local</button>
+                </div>
+
+            </div>
+
+            <button class="botonVolverF" onclick="volverAInicioF()">← Volver a inicio</button>
+        </div>
+    </div>
+
+    <div id="pantallaRegistroLocatarioF" class="pantallaF">
+        <div class="contenedorFormularioF">
+            <h2 class="tituloFormularioF">Ficha tu Local en TEFTI</h2>
+            <p class="subtituloFormularioF">Completa la alineación para salir a la cancha</p>
+
+            <div class="seccionFormularioF">
+                <label>Nombre del Titular</label>
+                <input type="text" class="inputTextoF" placeholder="Ej. Juan Pérez">
+
+                <label>Nombre del Local</label>
+                <input type="text" class="inputTextoF" placeholder="Ej. Tacos El Goleador">
+            </div>
+
+            <div class="seccionFormularioF">
+                <label>La Travesía (Historia de tu local)</label>
+                <textarea class="inputAreaF" placeholder="Cuéntale a los turistas cómo nació tu pasión..."></textarea>
+            </div>
+
+            <div class="seccionFormularioF">
+                <label>Ubicación</label>
+                <div class="mapaPlaceholderF">
+                    <span>🗺️ Aquí va el mapa de Google Maps</span>
+                </div>
+            </div>
+
+            <div class="seccionFormularioF">
+                <label>Menú (Elige cómo mostrar tus platillos)</label>
+                <div class="opcionesMenuF">
+
+                    <div class="opcionMenuDestacadaF">
+                        <span class="etiquetaRecomendadoF">⭐ Recomendado (Atrae 40% más turistas)</span>
+                        <h4>Escribir Platillos</h4>
+                        <input type="text" class="inputTextoF" placeholder="Nombre del platillo (Ej. Tacos al Pastor)">
+                        <input type="number" class="inputTextoF" placeholder="Precio ($)">
+                        <button class="botonSecundarioF">+ Añadir otro platillo</button>
+                    </div>
+
+                    <div class="opcionMenuRapidaF">
+                        <h4>Subir Foto del Menú</h4>
+                        <p>Opción rápida, pero menos atractiva para el usuario internacional.</p>
+                        <button class="botonGrisF">📷 Subir Imagen</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="botonAccionF botonDoradoF" onclick="finalizarRegistroF()">¡Publicar Local!</button>
+            <button class="botonVolverF" onclick="volverAVestidorF()">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="pantallaPrincipalF" class="pantallaF">
+        <div class="contenedorAppF">
+            <div class="navbarSimuladaF">
+                <span>TEFTI Explorador</span>
+                <button class="botonRegistroFlotanteF" onclick="irARegistroDesdeAppF()">
+                    ¡Regístrate aquí!
+                </button>
+            </div>
+
+            <div class="contenidoSimuladoF">
+                <h3>📍 Cerca de ti</h3>
+                <p>Aquí el turista vería los locales y el mapa...</p>
+                <div class="tarjetaDummyF"></div>
+                <div class="tarjetaDummyF"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <script src="logica.js"></script>
+</body>
+
+</html>

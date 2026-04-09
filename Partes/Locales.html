@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEFTI - Sección de Locales</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- ESTILOS CSS (Módulo Locales) --- */
+        :root {
+            --mex-pink: #e4007c;
+            --mex-green: #006847;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--light-bg);
+            font-family: 'Poppins', sans-serif;
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        html {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        /* Contenedor Principal: */
+        .tefti-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            color: var(--mex-green);
+            margin: 0;
+        }
+
+        /* Grid Responsivo */
+        .locales-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
+            justify-items: center;
+            /* Centra las tarjetas dentro de sus celdas */
+        }
+
+        /* Tarjeta de Local */
+        .card-local {
+            background: var(--white);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 350px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-local:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Área de Imagen */
+        .img-container {
+            width: 100%;
+            height: 200px;
+            background: #eee;
+            position: relative;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge-cat {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--mex-pink);
+        }
+
+        /* Galería de vistas rápidas del local */
+        .quick-gallery {
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+            margin-top: -25px;
+            z-index: 5;
+        }
+
+        .gallery-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: #ccc;
+            border: 3px solid var(--white);
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Contenido de texto */
+        .info-content {
+            padding: 20px;
+        }
+
+        .info-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.3rem;
+            color: #222;
+        }
+
+        .info-content p {
+            font-size: 0.9rem;
+            color: #666;
+            height: 60px;
+            /* Mantiene altura uniforme */
+            overflow: hidden;
+        }
+
+        .meta-tags {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 15px;
+        }
+
+        .price-range {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        /* Botón Interactivo */
+        .btn-view {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background: var(--mex-green);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-view:hover {
+            background: #004d35;
+        }
+
+        @media (max-width: 768px) {
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+
+        /* --- MODO DARK PARA LOCALES --- */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .section-title h2 {
+            color: #2ecc71;
+            /* Verde profesional */
+        }
+
+        body.dark-mode .section-title p {
+            color: #aaa;
+        }
+
+        body.dark-mode .card-local {
+            background-color: #1e1e1e;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid #333;
+        }
+
+        body.dark-mode .info-content h3 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .info-content p {
+            color: #bbb;
+        }
+
+        body.dark-mode .gallery-item {
+            background: #333;
+            border-color: #1e1e1e;
+        }
+
+        body.dark-mode .btn-view {
+            background: #2ecc71;
+        }
+
+        body.dark-mode .btn-view:hover {
+            background: #2ecc71;
+        }
+
+        /* Corrección Navbar (Botones verdes como el index) */
+        body.dark-mode .navbar {
+            background-color: #1a1a1a !important;
+        }
+
+        body.dark-mode .nav-title {
+            color: #fff !important;
+        }
+
+        body.dark-mode .nav-links a {
+            background-color: #2d2d2d !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .nav-links a.active,
+        body.dark-mode .nav-links a:hover {
+            background-color: #009688 !important;
+            border-color: #009688 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script src="config.js"></script>
+    <div id="navbar-container"></div>
+    <script src="navbar.js"></script>
+
+    <section class="tefti-section">
+        <div class="section-title">
+            <h2>Locales Destacados</h2>
+            <p>Descubre la esencia de México en cada rincón</p>
+            <input type="text" id="search-bar" placeholder="Buscar local por nombre, giro o descripción..." style="width: 100%; max-width: 600px; padding: 12px 20px; border-radius: 25px; border: 1px solid #c8e6c9; font-size: 1rem; margin-top: 25px; outline: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05); font-family: inherit;">
+        </div>
+
+        <div class="locales-grid" id="locales-container">
+            <!-- Loading indicator -->
+            <p style="grid-column: 1/-1; text-align: center; color: #666; font-size: 1.1rem;">Cargando nuestros comercios destacados...</p>
+        </div>
+
+    </section>
+
+    <script>
+
+
+        // 1. CARGAR CONFIGURACIÓN DE MODO OSCURO (Añadir al inicio del script)
+        const config = JSON.parse(localStorage.getItem('tefti_config'));
+        if (config && config.modoOscuro) {
+            document.body.classList.add('dark-mode');
+        }
+
+
+
+
+        const estadoSesion = localStorage.getItem('tefti_sesion');
+        const paginaActual = window.location.pathname.split("/").pop() || 'index.html';
+
+        if (!estadoSesion && paginaActual === 'index.html') {
+            window.location.href = 'app.html';
+        }
+
+        // --- SISTEMA DINAMICO DE LOCALES ---
+        let baseNegocios = [];
+
+        async function inicializarCatalogo() {
+            try {
+                const response = await fetch(API_URL + '/api/negocios/todos');
+                if (response.ok) {
+                    const todos = await response.json();
+                    // Solo mostramos locales físicos (tipo 'local')
+                    baseNegocios = todos.filter(n => n.tipo !== 'corporativo');
+                    renderizarGrilla(baseNegocios);
+                } else {
+                    document.getElementById('locales-container').innerHTML = '<p style="text-align:center;">Fallo de conexión. No pudimos descargar los locales en esta zona.</p>';
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('locales-container').innerHTML = '<p style="text-align:center;">Error al comunicarse con la base de datos (Backend apagado).</p>';
+            }
+        }
+
+        function renderizarGrilla(arregloLocal) {
+            const container = document.getElementById('locales-container');
+            container.innerHTML = '';
+
+            if (arregloLocal.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align:center;">No se encontró ningún local registrado con esos datos.</p>';
+                return;
+            }
+
+            arregloLocal.forEach(negocio => {
+                const imgPlaceholder = "https://images.unsplash.com/photo-1544025162-81111054378f?auto=format&fit=crop&q=80&w=600"; // Genérico en caso de fallo
+                const badge = negocio.categoria ? negocio.categoria.charAt(0).toUpperCase() + negocio.categoria.slice(1) : 'Comercio';
+                const imgStr = negocio.imagenUrl ? negocio.imagenUrl : imgPlaceholder;
+
+                const cardItem = document.createElement('div');
+                cardItem.className = 'card-local';
+                cardItem.innerHTML = `
+                    <div class="img-container">
+                        <img src="${imgStr}" onerror="this.src='${imgPlaceholder}';">
+                        <span class="badge-cat">${badge}</span>
+                    </div>
+                    <!-- Se ha quitado la quick-gallery para favorecer el enfoque a una sola imagen principal por perfil -->
+                    <div class="info-content" style="padding-top: 30px;">
+                        <h3>${negocio.nombre || 'Comercio sin Verific'}</h3>
+                        <p>${negocio.descripcion || 'Visita nuestra tienda para conocer nuestros geniales productos locales.'}</p>
+                        <div class="meta-tags">
+                            <span style="color: #666; font-size: 0.85rem;">📍 ${negocio.direccion || 'Ubicación Desconocida'}</span>
+                            <span class="price-range">Pyme</span>
+                        </div>
+                    </div>
+                    <button class="btn-view" onclick="window.location.href='VisorLocal.html?correo=${negocio.correo}'">Explorar Local</button>
+                `;
+                container.appendChild(cardItem);
+            });
+        }
+
+        // Activadores iniciales
+        document.addEventListener('DOMContentLoaded', () => {
+            inicializarCatalogo();
+
+            const buscador = document.getElementById('search-bar');
+            if (buscador) {
+                buscador.addEventListener('input', (e) => {
+                    const txt = e.target.value.toLowerCase();
+                    const coinciden = baseNegocios.filter(b => {
+                        const hitNombre = (b.nombre || '').toLowerCase().includes(txt);
+                        const hitGiro = (b.categoria || '').toLowerCase().includes(txt);
+                        const hitDesc = (b.descripcion || '').toLowerCase().includes(txt);
+                        return hitNombre || hitGiro || hitDesc;
+                    });
+                    renderizarGrilla(coinciden);
+                });
+            }
+        });
+
+        // La navbar ahora se carga mediante navbar.js
+    </script>
+</body>
+</html>

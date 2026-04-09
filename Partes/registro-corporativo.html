@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Corporativo - TEFTI</title>
+    <style>
+        :root {
+            --primary-color: #27ae60;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            height: 60px;
+        }
+        h2 {
+            text-align: center;
+            color: var(--dark-color);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        .input-tefti {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        .input-tefti:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .btn-register {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+        .btn-register:hover {
+            background: #1e8449;
+            transform: translateY(-2px);
+        }
+        .footer-links {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        .footer-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .preview-logo {
+            width: 100px;
+            height: 100px;
+            border: 2px dashed #ccc;
+            border-radius: 50%;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #fafafa;
+        }
+        .preview-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">
+        <img src="/img/Logo.png" alt="TEFTI">
+    </div>
+    <h2>Registro para Empresas Grandes</h2>
+
+    <div class="form-group">
+        <label>Nombre de la Empresa</label>
+        <input type="text" id="nombre" class="input-tefti" placeholder="Ej: KFC, Coppel, etc.">
+    </div>
+
+    <div class="form-group">
+        <label>Correo Electrónico Corporativo</label>
+        <input type="email" id="correo" class="input-tefti" placeholder="empresa@partner.com">
+    </div>
+
+    <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="password" class="input-tefti" placeholder="••••••••">
+    </div>
+
+    <div class="form-group">
+        <label>Giro de la Empresa</label>
+        <select id="giro" class="input-tefti">
+            <option value="Restaurante">Restaurante / Comida Rápida</option>
+            <option value="Ropa">Ropa / Moda</option>
+            <option value="Tecnología">Tecnología / Electrónica</option>
+            <option value="Servicios">Servicios</option>
+            <option value="Centro Comercial">Centro Comercial</option>
+            <option value="Otro">Otro</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Descripción Breve</label>
+        <textarea id="descripcion" class="input-tefti" style="height: 80px;" placeholder="Cuéntanos un poco sobre la empresa..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Logo de la Empresa</label>
+        <input type="file" id="logoFile" accept="image/*" style="display: none;">
+        <div class="preview-logo" onclick="document.getElementById('logoFile').click()" style="cursor: pointer;">
+            <div id="placeholderText" style="color: #999; font-size: 0.8rem; text-align: center;">Subir Logo</div>
+            <img id="logoPreview" style="display: none;">
+        </div>
+    </div>
+
+    <button class="btn-register" id="btnRegistrar">Crear Cuenta Corporativa</button>
+
+    <div class="footer-links">
+        ¿Ya tienen cuenta? <a href="login-corporativo.html">Inicia sesión aquí</a>
+    </div>
+</div>
+
+<script>
+    // VERIFICACIÓN DE PROTOCOLO
+    if (window.location.protocol === 'file:') {
+        alert("⚠️ ATENCIÓN: Estás abriendo el archivo HTML directamente. Para que el registro funcione, debes abrir la app a través del servidor (ej: http://localhost:3000/app.html)");
+    }
+
+    const logoFileInput = document.getElementById('logoFile');
+    const logoPreview = document.getElementById('logoPreview');
+    const placeholderText = document.getElementById('placeholderText');
+    let uploadedLogoUrl = "";
+
+    logoFileInput.addEventListener('change', async function() {
+        const file = this.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('imagen', file);
+            
+            placeholderText.innerText = "Subiendo...";
+            try {
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                uploadedLogoUrl = data.url;
+                
+                logoPreview.src = uploadedLogoUrl;
+                logoPreview.style.display = 'block';
+                placeholderText.style.display = 'none';
+            } catch (e) {
+                alert("Error al subir el logo");
+                placeholderText.innerText = "Error";
+            }
+        }
+    });
+
+    document.getElementById('btnRegistrar').addEventListener('click', async () => {
+        const btn = document.getElementById('btnRegistrar');
+        const payload = {
+            nombre: document.getElementById('nombre').value,
+            correo: document.getElementById('correo').value,
+            password: document.getElementById('password').value,
+            giro: document.getElementById('giro').value,
+            descripcion: document.getElementById('descripcion').value,
+            imagenUrl: uploadedLogoUrl,
+            tipo: 'corporativo'
+        };
+
+        if(!payload.nombre || !payload.correo || !payload.password) {
+            alert("Por favor llena los campos obligatorios");
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = 'Registrando la empresa...';
+        console.log("Enviando registro corporativo:", payload);
+
+        try {
+            const res = await fetch('/api/corporativos/registro', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if(res.ok) {
+                alert("¡Registro corporativo exitoso!");
+                window.location.href = 'login-corporativo.html';
+            } else {
+                const err = await res.json();
+                console.error("Detalle del error:", err);
+                const msgError = err.error || "No se pudo registrar la empresa.";
+                const msgDetalle = err.details ? ("\n\nDetalles:\n" + (Array.isArray(err.details) ? err.details.join('\n') : err.details)) : "";
+                alert("Error: " + msgError + msgDetalle);
+                btn.disabled = false;
+                btn.innerText = 'Crear Cuenta Corporativa';
+            }
+        } catch(e) {
+            console.error(e);
+            alert("Error de conexión con el servidor. Verifica que el backend esté encendido.");
+            btn.disabled = false;
+            btn.innerText = 'Crear Cuenta Corporativa';
+        }
+    });
+</script>
+
+</body>
+</html>

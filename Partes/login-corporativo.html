@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Corporativo - TEFTI</title>
+    <style>
+        :root {
+            --primary-color: #27ae60;
+            --dark-color: #2c3e50;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .logo img { height: 50px; margin-bottom: 20px; }
+        h2 { color: var(--dark-color); margin-bottom: 10px; }
+        p { color: #666; margin-bottom: 30px; font-size: 0.9rem; }
+        .form-group { text-align: left; margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
+        .input-tefti {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: var(--dark-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-login:hover { background: #1a252f; }
+        .footer-links { margin-top: 25px; font-size: 0.85rem; }
+        .footer-links a { color: var(--primary-color); text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="logo">
+        <img src="/img/Logo.png" alt="TEFTI">
+    </div>
+    <h2>Portal Corporativo</h2>
+    <p>Administración para Grandes Empresas</p>
+
+    <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input type="email" id="correo" class="input-tefti" placeholder="empresa@partner.com">
+    </div>
+
+    <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="password" class="input-tefti" placeholder="••••••••">
+    </div>
+
+    <button class="btn-login" id="btnLogin">Ingresar al Panel</button>
+
+    <div class="footer-links">
+        ¿Aún no tienen cuenta? <a href="registro-corporativo.html">Registrar Empresa</a><br><br>
+        <a href="index.html" style="color: #999;">Volver al inicio</a>
+    </div>
+</div>
+
+<script>
+    document.getElementById('btnLogin').addEventListener('click', async () => {
+        const correo = document.getElementById('correo').value;
+        const password = document.getElementById('password').value;
+
+        if(!correo || !password) {
+            alert("Completa todos los campos");
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/corporativos/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ correo, password })
+            });
+
+            if(res.ok) {
+                const data = await res.json();
+                // Usamos flags específicos para diferenciar la sesión corporativa
+                localStorage.setItem('tefti_sesion_corp', 'activa');
+                localStorage.setItem('tefti_correo_corp', data.correo);
+                localStorage.setItem('tefti_nombre_corp', data.nombre);
+                
+                window.location.href = 'PanelCorporativo.html';
+            } else {
+                alert("Credenciales incorrectas para el portal corporativo");
+            }
+        } catch(e) {
+            alert("Error de conexión");
+        }
+    });
+</script>
+
+</body>
+</html>

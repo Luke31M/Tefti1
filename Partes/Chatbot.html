@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEFTI - Chatbot</title>
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; }
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+        /* Estructura del Chat */
+        .chat-wrapper { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eaeaea; display: flex; flex-direction: column; height: 75vh; overflow: hidden; }
+        .chat-header { background: #1e8449; color: white; padding: 15px 20px; font-weight: bold; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; background-color: #f9fafb; }
+
+        /* Burbujas de Mensaje */
+        .message { max-width: 75%; padding: 12px 16px; font-size: 15px; line-height: 1.4; position: relative; }
+        .msg-user { background: #27ae60; color: white; align-self: flex-end; border-radius: 15px 15px 0 15px; }
+        .msg-bot { background: #fff; color: #333; align-self: flex-start; border-radius: 15px 15px 15px 0; border: 1px solid #ddd; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+
+        /* Tarjeta de Recomendación (Restaurante) */
+        .recommendation-card { margin-top: 15px; background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; max-width: 280px; }
+        .recommendation-card img { width: 100%; height: 160px; object-fit: cover; }
+        .card-body { padding: 12px; }
+        .card-title { margin: 0 0 5px 0; font-size: 16px; color: #000; font-weight: bold; }
+        .stars { color: #ffc107; font-size: 16px; margin-bottom: 10px; }
+        .btn-route { background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; font-size: 13px; text-transform: uppercase; transition: 0.2s; }
+        .btn-route:hover { background: #218838; }
+
+        /* Área de Input */
+        .chat-input-container { padding: 15px 20px; background: #fff; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .chat-input { flex: 1; padding: 12px 20px; border: 1px solid #ccc; border-radius: 25px; outline: none; font-size: 15px; background: #f8f9fa; }
+        .chat-input:focus { border-color: #27ae60; background: #fff; }
+        .btn-send { background: #27ae60; color: white; border: none; padding: 0 25px; border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-send:hover { background: #1e8449; }
+
+/* --- MODO OSCURO PARA EL CHAT --- */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .chat-wrapper {
+            background: #1e1e1e;
+            border-color: #333;
+        }
+
+        body.dark-mode .chat-messages {
+            background-color: #121212;
+        }
+
+        body.dark-mode .msg-bot {
+            background: #2d2d2d;
+            color: #eee;
+            border-color: #444;
+        }
+
+        body.dark-mode .chat-input-container {
+            background: #1e1e1e;
+            border-top-color: #333;
+        }
+
+        body.dark-mode .chat-input {
+            background: #2d2d2d;
+            border-color: #444;
+            color: #fff;
+        }
+
+        body.dark-mode .recommendation-card {
+            background: #2d2d2d;
+            border-color: #444;
+        }
+
+        body.dark-mode .card-title {
+            color: #fff;
+        }
+
+        /* Estilo para la Navbar en modo oscuro (Copiado de tu index) */
+        body.dark-mode .navbar {
+            background-color: #1a1a1a !important;
+            border-bottom: 1px solid #333;
+        }
+        body.dark-mode .nav-title { color: #fff !important; }
+
+/* --- CORRECCIÓN DE BOTONES DEL NAVBAR EN MODO OSCURO (ESTILO VERDE INDEX) --- */
+body.dark-mode .nav-links a {
+    background-color: #1a1a1a !important; /* Fondo oscuro integrado con el nav */
+    color: #e0e0e0 !important;           /* Texto gris claro */
+    border-color: #444 !important;      /* Borde sutil */
+    transition: all 0.3s ease;
+}
+
+/* Estado HOVER (al pasar el mouse) y ACTIVE (pestaña actual) */
+body.dark-mode .nav-links a:hover, 
+body.dark-mode .nav-links a.active {
+    background-color: #2ecc71 !important; /* Verde esmeralda brillante del index */
+    color: #000000 !important;           /* Texto negro para buen contraste */
+    border-color: #2ecc71 !important;
+    box-shadow: 0 0 10px rgba(12, 235, 161, 0.5) !important; /* Brillo verde opcional */
+}
+
+/* Ajustes adicionales para la Navbar en modo oscuro */
+body.dark-mode .navbar {
+    background-color: #111111 !important; /* Negro profundo */
+    border-bottom: 1px solid #333 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6) !important;
+}
+
+body.dark-mode .nav-title {
+    color: #ffffff !important;
+}
+
+body.dark-mode .nav-subtitle {
+    color: #999 !important;
+}
+
+body.dark-mode .nav-options span {
+    color: #aaa !important;
+}
+
+
+
+    </style>
+</head>
+<body>
+
+    <div id="navbar-container"></div>
+    <script src="navbar.js"></script>
+
+    <div class="container">
+        <div class="chat-wrapper">
+            
+            <div class="chat-header">
+                🤖 TEFTI Chat AI
+                <button onclick="limpiarChat()" title="Nueva conversación" style="margin-left:auto; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.4); color:white; padding:4px 10px; border-radius:12px; cursor:pointer; font-size:12px;">🗑️ Nueva Chat</button>
+            </div>
+            
+            <div class="chat-messages">
+                <div class="message msg-bot">
+                    ¡Hola! Soy TEFTI Chat AI. ¿En qué te puedo ayudar hoy?
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" placeholder="Escribe tu mensaje a TEFTI...">
+                <button class="btn-send">Enviar</button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+
+// --- APLICAR CONFIGURACIÓN DE MODO OSCURO ---
+    const config = JSON.parse(localStorage.getItem('tefti_config'));
+    if (config && config.modoOscuro) {
+        document.body.classList.add('dark-mode');
+    }
+
+
+
+
+    const chatMessages = document.querySelector('.chat-messages');
+    const chatInput = document.querySelector('.chat-input');
+    
+    // Recuerda colocar tu llave real aquí
+    const API_KEY = "AIzaSyC4X3AJe5ma3Kg49hM1mAevK0jA1HCPJDc"; 
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+
+    // --- 1. LÓGICA DE PERSISTENCIA POR USUARIO ---
+    // La clave incluye el correo del usuario para que cada usuario tenga su propio historial
+    function getChatKey() {
+        const correo = localStorage.getItem('tefti_correo_usuario') || 'invitado';
+        return `tefti_chat_history_${correo}`;
+    }
+
+    function limpiarChat() {
+        if (!confirm('¿Limpiar el historial de esta conversación?')) return;
+        localStorage.removeItem(getChatKey());
+        chatMessages.innerHTML = '';
+        // Restaurar mensaje de bienvenida
+        const welcomeDiv = document.createElement('div');
+        welcomeDiv.className = 'message msg-bot';
+        welcomeDiv.innerHTML = `¡Hola! Soy <strong>TEFTI Chat AI</strong> 🤖<br>Tengo acceso a <strong>${catalogoNegocios.length} local${catalogoNegocios.length !== 1 ? 'es' : ''}</strong> registrado${catalogoNegocios.length !== 1 ? 's' : ''} en TEFTI.<br><br>Puedo ayudarte a encontrar restaurantes, tiendas, servicios y más. ¿Qué estás buscando?`;
+        chatMessages.appendChild(welcomeDiv);
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Cargar el catálogo de negocios de la BD al iniciar
+        await cargarCatalogoNegocios();
+
+        const chatKey = getChatKey();
+        const history = JSON.parse(localStorage.getItem(chatKey)) || [];
+
+        if (history.length > 0) {
+            // Restaurar historial del usuario actual
+            chatMessages.innerHTML = '';
+            history.forEach(msg => addMessage(msg.content, msg.side, msg.isHTML, false));
+        } else {
+            // Primera vez de ESTE usuario: mostrar bienvenida personalizada
+            const inicialMsg = chatMessages.querySelector('.msg-bot');
+            if (inicialMsg && catalogoNegocios.length > 0) {
+                inicialMsg.innerHTML = `¡Hola! Soy <strong>TEFTI Chat AI</strong> 🤖<br>Tengo acceso a <strong>${catalogoNegocios.length} local${catalogoNegocios.length !== 1 ? 'es' : ''}</strong> registrado${catalogoNegocios.length !== 1 ? 's' : ''} en TEFTI.<br><br>Puedo ayudarte a encontrar restaurantes, tiendas, servicios y más. ¿Qué estás buscando?`;
+            }
+        }
+    });
+
+    function saveChat(content, side, isHTML) {
+        const history = JSON.parse(localStorage.getItem(getChatKey())) || [];
+        history.push({ content, side, isHTML });
+        localStorage.setItem(getChatKey(), JSON.stringify(history));
+    }
+
+    // --- 2. AGREGAR MENSAJES Y MAPAS EMBEBIDOS ---
+    function addMessage(content, side, isHTML = false, shouldSave = true) {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', side === 'user' ? 'msg-user' : 'msg-bot');
+        
+        if (side === 'bot' && content.includes('UBICACION{')) {
+            const regex = /UBICACION\{(.*?)\}/;
+            const match = content.match(regex);
+            if (match) {
+                const lugar = match[1];
+                const textoLimpio = content.replace(regex, '');
+                isHTML = true;
+                
+                content = `
+                    ${textoLimpio}
+                    <div class="recommendation-card" style="max-width: 100%; width: 320px;">
+                        <iframe 
+                            width="100%" 
+                            height="250" 
+                            style="border:0; border-bottom: 1px solid #ddd;" 
+                            loading="lazy" 
+                            allowfullscreen 
+                            src="https://maps.google.com/maps?q=${encodeURIComponent(lugar)}&t=&z=15&ie=UTF8&iwloc=&output=embed">
+                        </iframe>
+                        <div class="card-body">
+                            <h4 class="card-title">${lugar}</h4>
+                            <button class="btn-route" onclick="window.open('https://maps.google.com/maps?q=${encodeURIComponent(lugar)}', '_blank')">
+                                📍 ABRIR EN APP
+                            </button>
+                        </div>
+                    </div>`;
+            }
+        }
+
+        if (isHTML) {
+            msgDiv.innerHTML = content;
+        } else {
+            msgDiv.innerText = content;
+        }
+        
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        if (shouldSave) saveChat(content, side, isHTML);
+        return msgDiv;
+    }
+
+    // --- 3. CARGAR NEGOCIOS DE LA BASE DE DATOS ---
+    let catalogoNegocios = [];
+
+    async function cargarCatalogoNegocios() {
+        try {
+            const res = await fetch('/api/negocios/todos');
+            if (res.ok) {
+                catalogoNegocios = await res.json();
+            }
+        } catch (e) {
+            console.warn('No se pudo cargar el catálogo de negocios para el chatbot:', e);
+        }
+    }
+
+    function generarContextoNegocios() {
+        if (!catalogoNegocios || catalogoNegocios.length === 0) {
+            return "No hay locales registrados actualmente en TEFTI.";
+        }
+
+        const lista = catalogoNegocios.map((n, i) => {
+            const horario = n.horarios ? Object.entries(n.horarios)
+                .filter(([_, h]) => !h.cerrado)
+                .map(([dia, h]) => `${dia}: ${h.apertura || '?'}-${h.cierre || '?'}`)
+                .join(', ') : 'No especificado';
+
+            const rating = n.resenas && n.resenas.length > 0
+                ? (n.resenas.reduce((s, r) => s + (r.estrellas || 5), 0) / n.resenas.length).toFixed(1)
+                : 'Sin calificación';
+
+            const productos = n.productos && n.productos.length > 0
+                ? n.productos.map(p => `${p.nombre}${p.precio ? ' (' + p.precio + ')' : ''}`).join(', ')
+                : 'No especificados';
+
+            return `${i+1}. **${n.nombre}** | Categoría: ${n.categoria || 'General'} | Dirección: ${n.direccion || 'No disponible'} | Tel: ${n.telefono || 'N/A'} | Descripción: ${n.descripcion || 'Sin descripción'} | Horarios: ${horario} | Calificación: ${rating} ⭐ | Productos/Servicios: ${productos} | URL del perfil: VisorLocal.html?correo=${n.correo}`;
+        }).join('\n');
+
+        return `Los siguientes locales están OFICIALMENTE REGISTRADOS y verificados en la plataforma TEFTI:\n${lista}`;
+    }
+
+    // --- 4. PROCESAMIENTO CON GEMINI ---
+    async function processBotResponse(userText) {
+        const loadingMsg = addMessage("Escribiendo...", 'bot', false, false);
+
+        // Construir contexto dinámico con locales reales
+        const contextoNegocios = generarContextoNegocios();
+
+        const systemPrompt = `Eres TEFTI Chat AI, el asistente inteligente de la plataforma TEFTI para turismo y locales comerciales.
+
+TU MISIÓN PRINCIPAL:
+- Ayudar a los usuarios a encontrar locales, restaurantes, tiendas y servicios registrados en TEFTI.
+- Dar recomendaciones precisas basándote ÚNICAMENTE en los locales reales de la base de datos de TEFTI que se te proporcionan.
+- Si el usuario pregunta por un tipo de local, comida o categoría, busca en tu lista de negocios registrados y recomiéndalos.
+- Si el usuario pide ver o ir a un local, menciona el enlace de su perfil.
+- Si el usuario pide la ubicación de un local, usa la etiqueta: UBICACION{Nombre y Dirección del Local}
+
+REGLAS:
+- Solo hablas de turismo, gastronomía, locales y la plataforma TEFTI.
+- Siempre prioriza los negocios de TEFTI sobre lugares genéricos.
+- Si no hay locales en TEFTI que coincidan con la búsqueda, díselo amablemente y sugiere visitar la sección de "Locales" en la app.
+- Sé amigable, conciso y útil.
+
+${contextoNegocios}`;
+
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    system_instruction: { parts: [{ text: systemPrompt }] },
+                    contents: [{ parts: [{ text: userText }] }]
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                loadingMsg.innerText = "Error API: " + (data.error?.message || response.statusText);
+                return;
+            }
+
+            let botReply = data.candidates[0].content.parts[0].text;
+
+            // Convertir markdown básico (**negrita**) a HTML
+            botReply = botReply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+
+            chatMessages.removeChild(loadingMsg);
+            addMessage(botReply, 'bot', true);
+
+        } catch (error) {
+            loadingMsg.innerText = "Error local: " + error.message;
+        }
+    }
+
+    // --- 4. EVENTOS Y NAVBAR ---
+    function handleSendMessage() {
+        const text = chatInput.value.trim();
+        if (text) {
+            addMessage(text, 'user');
+            chatInput.value = "";
+            processBotResponse(text);
+        }
+    }
+
+    document.querySelector('.btn-send').addEventListener('click', handleSendMessage);
+    chatInput.addEventListener('keypress', (e) => { 
+        if (e.key === 'Enter') handleSendMessage(); 
+    });
+
+    // La navbar ahora se carga mediante navbar.js
+</script>
+
+</body>
+</html>

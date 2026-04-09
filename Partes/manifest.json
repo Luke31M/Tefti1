@@ -1,0 +1,21 @@
+{
+  "name": "TEFTI - Tu Pasaporte al Mundial",
+  "short_name": "TEFTI",
+  "description": "Plataforma integral de servicios y pasaporte digital para el Mundial FIFA 2026.",
+  "start_url": "/app.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#27ae60",
+  "icons": [
+    {
+      "src": "/img/Logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/Logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

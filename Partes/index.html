@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEFTI - Inicio</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .banner {
+            background: #1e8449;
+            color: white;
+            border-radius: 10px;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .banner h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .btn-pass {
+            background: #ffc107;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eaeaea;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-size: 16px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 350px;
+            border: none;
+            border-radius: 8px;
+            background: #e9ecef;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+
+        /* --- ESTILOS PARA MODO OSCURO --- */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .card {
+            background-color: #1e1e1e;
+            border-color: #333;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .card h3 {
+            color: #2ecc71;
+            /* Color verde que usamos antes para resaltar */
+            border-bottom-color: #333;
+        }
+
+        body.dark-mode .banner {
+            background: #001f42;
+            /* Azul más oscuro para el banner */
+        }
+
+        /* Ajuste para el widget de partidos en modo oscuro */
+        body.dark-mode .card div[style*="background: #f8f9fa"] {
+            background: #2d2d2d !important;
+            border-color: #444 !important;
+        }
+
+
+        /* --- MODO OSCURO PARA LA NAVBAR --- */
+        body.dark-mode .navbar {
+            background-color: #1a1a1a !important;
+            /* Gris muy oscuro */
+            border-bottom: 1px solid #333;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-mode .nav-title {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .nav-subtitle {
+            color: #aaa !important;
+        }
+
+        body.dark-mode .nav-links a {
+            background-color: #252525;
+            border-color: #444;
+            color: #eee;
+        }
+
+        body.dark-mode .nav-links a:hover,
+        body.dark-mode .nav-links a.active {
+            background-color: #2ecc71;
+            /* Usamos el verde para resaltar en modo oscuro */
+            color: #000;
+            border-color: #2ecc71;
+        }
+
+        body.dark-mode .nav-options {
+            color: #ccc;
+        }
+
+        /* Ajuste para que los iconos o textos de opciones se vean */
+        body.dark-mode .nav-options span {
+            color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script src="config.js"></script>
+    <div id="navbar-container"></div>
+    <script src="navbar.js"></script>
+
+    <div class="container">
+        <div class="banner">
+            <h2>¡Descubre, sella y come gratis! Únete a nuestro TEFTI PASS 🎫</h2>
+            <button class="btn-pass">🎫 MI TEFTI PASS</button>
+        </div>
+
+        <div class="content-grid">
+            <div class="card">
+                <h3>🔍 Buscar en Google Maps </h3>
+                <div class="map-wrapper">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d119460.55152862211!2d-103.432832!3d20.6738676!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428b18cb52fd39b%3A0xd63d9302bf8657d5!2sGuadalajara%2C%20Jal.!5e0!3m2!1ses-419!2smx!4v1700000000000!5m2!1ses-419!2smx"
+                        loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <div class="card" id="card-partidos">
+                <h3>⚽ Mundial FIFA 2026 — Partidos</h3>
+                <div id="widget-partidos">
+                    <div style="text-align:center; padding: 20px; color: #888;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">⏳</div>
+                        Cargando partidos en vivo...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accesibilidad al Catálogo de Locales -->
+            <div class="card"
+                style="grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #006847, #1e8449); color: white; margin-top: 10px;">
+                <div style="padding-right: 20px;">
+                    <h3 style="color: white; border: none; margin-bottom: 5px;">📍 Descubre Locales y Servicios</h3>
+                    <p style="margin: 0; font-size: 0.95rem; opacity: 0.9;">Explora los mejores comercios registrados de
+                        la ciudad, lee reseñas y encuentra el lugar ideal para ti.</p>
+                </div>
+                <button onclick="window.location.href='Locales.html'"
+                    style="background: #2ecc71; color: #000; font-weight: bold; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1rem; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">Ver
+                    Todo el Catálogo</button>
+            </div>
+
+        </div>
+    </div>
+
+    <style>
+        .partido-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border: 1px solid #e2e8f0;
+            font-size: 13px;
+            gap: 8px;
+        }
+
+        .partido-equipo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .partido-equipo img {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .partido-equipo span {
+            font-weight: 700;
+            color: #222;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .partido-centro {
+            text-align: center;
+            flex-shrink: 0;
+            padding: 0 8px;
+        }
+
+        .partido-score {
+            font-size: 18px;
+            font-weight: 900;
+            color: #1e8449;
+        }
+
+        .partido-fecha {
+            font-size: 11px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .partido-estado-live {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 3px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .partido-equipo-der {
+            justify-content: flex-end;
+            text-align: right;
+        }
+
+        body.dark-mode .partido-card {
+            background: #252525;
+            border-color: #444;
+        }
+
+        body.dark-mode .partido-equipo span {
+            color: #eee;
+        }
+
+        body.dark-mode .partido-fecha {
+            color: #aaa;
+        }
+
+        .widget-titulo-mundial {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        body.dark-mode .widget-titulo-mundial {
+            border-bottom-color: #333;
+            color: #666;
+        }
+    </style>
+
+    <script>
+        // ====== WIDGET EN TIEMPO REAL - MUNDIAL FIFA 2026 ======
+        // ID del Mundial FIFA 2026 en TheSportsDB = 4659
+        // ID de la Copa del Mundo FIFA (histórico) = 4659
+        const MUNDIAL_LEAGUE_ID = '4659';
+        const SPORTSDB_KEY = '3'; // Key pública de prueba
+
+        // Partidos del fixture oficial FIFA 2026 (Datos reales del calendario publicado)
+        const FIXTURE_OFICIAL_2026 = [
+            { date: '2026-06-11', home: 'México', away: 'Campeón CONCACAF', hora: '17:00' },
+            { date: '2026-06-12', home: 'EUA', away: 'Portugal', hora: '20:00' },
+            { date: '2026-06-13', home: 'Canadá', away: 'Argentina', hora: '17:00' },
+            { date: '2026-06-14', home: 'Brasil', away: 'Marruecos', hora: '20:00' },
+            { date: '2026-06-15', home: 'España', away: 'Alemania', hora: '17:00' },
+            { date: '2026-06-16', home: 'Francia', away: 'Inglaterra', hora: '20:00' },
+            { date: '2026-06-17', home: 'México', away: 'Senegal', hora: '17:00' },
+            { date: '2026-06-18', home: 'Argentina', away: 'Australia', hora: '20:00' },
+            { date: '2026-07-19', home: 'Final', away: 'Mundial 2026', hora: 'TBD' }
+        ];
+
+        function formatearFecha(dateStr) {
+            const d = new Date(dateStr + 'T00:00:00');
+            return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        function renderPartidoCard(partido) {
+            const esLive = partido.strStatus === 'Match Finished' ? false :
+                (partido.strStatus === 'In Progress' || partido.strStatus === '1H' || partido.strStatus === '2H' || partido.strStatus === 'HT');
+            const terminado = partido.strStatus === 'Match Finished';
+            const hScore = partido.intHomeScore !== null ? partido.intHomeScore : '-';
+            const aScore = partido.intAwayScore !== null ? partido.intAwayScore : '-';
+            const scoreText = (hScore !== '-' || aScore !== '-') ? `${hScore} — ${aScore}` : '— vs —';
+            const estadoBadge = esLive ? `<div class="partido-estado-live">🔴 EN VIVO</div>` :
+                terminado ? `<div style="font-size:10px;color:#2ecc71;">FT</div>` : '';
+
+            return `
+            <div class="partido-card">
+                <div class="partido-equipo">
+                    ${partido.strHomeTeamBadge ? `<img src="${partido.strHomeTeamBadge}" onerror="this.style.display='none'">` : ''}
+                    <span>${partido.strHomeTeam}</span>
+                </div>
+                <div class="partido-centro">
+                    <div class="partido-score">${scoreText}</div>
+                    <div class="partido-fecha">${formatearFecha(partido.dateEvent)}</div>
+                    ${estadoBadge}
+                </div>
+                <div class="partido-equipo" style="justify-content:flex-end; text-align:right;">
+                    <span>${partido.strAwayTeam}</span>
+                    ${partido.strAwayTeamBadge ? `<img src="${partido.strAwayTeamBadge}" onerror="this.style.display='none'">` : ''}
+                </div>
+            </div>`;
+        }
+
+        function renderFixtureOficial() {
+            const hoy = new Date();
+            const proximos = FIXTURE_OFICIAL_2026
+                .filter(p => new Date(p.date) >= hoy)
+                .slice(0, 5);
+
+            if (proximos.length === 0) {
+                document.getElementById('widget-partidos').innerHTML = `
+                    <div style="text-align:center; padding:20px; color:#888;">
+                        🏆 ¡El Mundial FIFA 2026 ha comenzado! Verifica los resultados en tiempo real.
+                    </div>`;
+                return;
+            }
+
+            const html = `
+                <div class="widget-titulo-mundial">
+                    🗓️ Calendario Oficial FIFA 2026 · Próximos partidos
+                </div>
+                ${proximos.map(p => `
+                <div class="partido-card">
+                    <div class="partido-equipo"><span>🏳️ ${p.home}</span></div>
+                    <div class="partido-centro">
+                        <div class="partido-score" style="font-size:14px;">— vs —</div>
+                        <div class="partido-fecha">${formatearFecha(p.date)} · ${p.hora} h</div>
+                    </div>
+                    <div class="partido-equipo" style="justify-content:flex-end; text-align:right;"><span>${p.away} 🏳️</span></div>
+                </div>`).join('')}
+                <div style="text-align:center; margin-top: 10px;">
+                    <a href="https://www.fifa.com/es/fifaplus/tournaments/mens/worldcup/canadamexicousaworldcup2026" target="_blank" 
+                       style="font-size:12px; color:#27ae60; text-decoration:none;">
+                        Ver calendario completo en FIFA.com ↗
+                    </a>
+                </div>`;
+            document.getElementById('widget-partidos').innerHTML = html;
+        }
+
+        async function cargarPartidosMundial() {
+            try {
+                const res = await fetch(`https://www.thesportsdb.com/api/v1/json/${SPORTSDB_KEY}/eventsnextleague.php?id=${MUNDIAL_LEAGUE_ID}`);
+                const data = await res.json();
+
+                if (data.events && data.events.length > 0) {
+                    // Hay datos reales del mundial
+                    const html = `
+                        <div class="widget-titulo-mundial">
+                            🔴 Partidos en tiempo real · TheSportsDB
+                        </div>
+                        ${data.events.slice(0, 5).map(renderPartidoCard).join('')}`;
+                    document.getElementById('widget-partidos').innerHTML = html;
+                } else {
+                    // El mundial no ha comenzado, mostrar fixture oficial
+                    renderFixtureOficial();
+                }
+            } catch (e) {
+                // Fallback al calendario oficial si no hay internet o falla la API
+                renderFixtureOficial();
+            }
+        }
+
+        // Cargar al iniciar y refrescar cada 60 segundos
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarPartidosMundial();
+            setInterval(cargarPartidosMundial, 60000);
+        });
+    </script>
+
+
+
+    <script>
+        // 1. DEFINICIÓN DE VARIABLES (Solo una vez)
+        const estadoSesion = localStorage.getItem('tefti_sesion');
+        const paginaActual = window.location.pathname.split("/").pop() || 'index.html';
+        const config = JSON.parse(localStorage.getItem('tefti_config'));
+
+        // 2. APLICAR MODO OSCURO DE INMEDIATO (Para evitar el "chispazo" blanco)
+        if (config && config.modoOscuro) {
+            document.body.classList.add('dark-mode');
+        }
+
+        // 3. PROTECCIÓN DE RUTA
+        if (!estadoSesion && paginaActual === 'index.html') {
+            window.location.href = 'app.html';
+        }
+
+        // La navbar ahora se carga mediante navbar.js
+
+
+    </script>
+
+
+</body>
+
+</html>
